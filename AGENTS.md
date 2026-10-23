@@ -68,3 +68,19 @@ Canonical 5-role vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `r
 ### Domain docs
 
 Single-context layout (`GLOSSARY.md` + `docs/adr/` at repo root). See `docs/agents/domain.md`.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
+
+## Graphify & ICM Architecture Layer
+
+* **Knowledge Graph**: AST indexed at `graphify-out/graph.json`. Visual trees at `graphify-out/GRAPH_TREE.html` and `graphify-out/OAMsupabase-callflow.html`.
+* **Context Contracts**: Dense domain invariants stored in `.context/` (gapless sequential `00_` through `99_`).
+* **Sync Directive**: Run `npm run graph` to refresh the AST knowledge graph after major structural edits.

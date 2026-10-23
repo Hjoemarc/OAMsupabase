@@ -1,11 +1,13 @@
 import { redirect } from 'next/navigation';
 import { getCurrentUserWithRoles } from '@/features/auth/queries';
 import { logout } from '@/features/auth/actions';
+import { Clock } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-export const instant = false;
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Pending Role Assignment | OAMS',
+  title: 'Pending Role Assignment | ZPPSU OAMS',
   description: 'Your account is pending role provision by an institutional accreditation administrator.',
 };
 
@@ -23,51 +25,40 @@ export default async function PendingApprovalPage() {
   const displayName = userContext.profile?.full_name || userContext.user.email;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-lg space-y-6 bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200/80 dark:border-slate-800 text-center">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-500/10 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400 mb-2">
-          <svg
-            className="w-8 h-8"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-            />
-          </svg>
+    <div className="min-h-screen flex items-center justify-center bg-[var(--background)] px-4 py-12 sm:px-6 lg:px-8 text-[var(--foreground)]">
+      <div className="w-full max-w-lg space-y-6 bg-[var(--surface)] p-8 rounded-[var(--radius-surface)] border border-[var(--border)] shadow-xs text-center">
+        <div className="inline-flex items-center justify-center w-14 h-14 rounded-[var(--radius-control)] bg-amber-50 text-amber-700 border border-amber-200 mb-2">
+          <Clock className="w-7 h-7 stroke-[1.75]" />
         </div>
 
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-          Account Pending Assignment
+        <h1 className="text-xl font-medium tracking-tight text-[var(--foreground)] font-[family-name:var(--font-display)]">
+          Account pending assignment
         </h1>
 
-        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-          Welcome, <span className="font-semibold text-slate-900 dark:text-slate-200">{displayName}</span>.
-          Your account has been successfully created, but you have not yet been assigned an accreditation role.
+        <p className="text-xs text-[var(--text-muted)] leading-relaxed font-[family-name:var(--font-body)]">
+          Welcome, <span className="font-semibold text-[var(--foreground)]">{displayName}</span>.
+          Your account has been registered, but you have not yet been assigned an accreditation role.
         </p>
 
-        <div className="rounded-xl bg-slate-50 dark:bg-slate-800/60 p-4 border border-slate-200 dark:border-slate-800 text-left text-xs space-y-2 text-slate-600 dark:text-slate-400">
-          <p className="font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider text-[11px]">
-            Next Steps
+        <div className="rounded-[var(--radius-control)] bg-[var(--surface-muted)] p-4 border border-[var(--border)] text-left text-xs space-y-2 text-[var(--text-secondary)]">
+          <p className="font-medium text-[var(--foreground)] text-xs">
+            Administrative provisioning steps
           </p>
-          <ul className="list-disc pl-4 space-y-1">
-            <li>An institutional Super Administrator or QA Director must assign your role.</li>
-            <li>Supported roles: <code>admin</code>, <code>coordinator</code>, <code>evaluator</code>, or <code>faculty</code>.</li>
-            <li>Once assigned, you will gain immediate access to your accreditation workspace.</li>
+          <ul className="list-disc pl-4 space-y-1 text-[var(--text-muted)] text-[11px]">
+            <li>An institutional Super Administrator or QA Director must grant your role.</li>
+            <li>Supported roles: <code className="text-[var(--foreground)] bg-[var(--surface)] px-1 py-0.5 rounded border border-[var(--border)]">admin</code>, <code className="text-[var(--foreground)] bg-[var(--surface)] px-1 py-0.5 rounded border border-[var(--border)]">coordinator</code>, <code className="text-[var(--foreground)] bg-[var(--surface)] px-1 py-0.5 rounded border border-[var(--border)]">evaluator</code>, or <code className="text-[var(--foreground)] bg-[var(--surface)] px-1 py-0.5 rounded border border-[var(--border)]">faculty</code>.</li>
+            <li>Once approved, you will gain immediate access to your workspace.</li>
           </ul>
         </div>
 
         <form action={logout} className="pt-2">
-          <button
+          <Button
             type="submit"
-            className="inline-flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            variant="outline"
+            className="w-full text-xs font-medium"
           >
-            Sign Out
-          </button>
+            Sign out
+          </Button>
         </form>
       </div>
     </div>
