@@ -43,7 +43,8 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith('/admin') ||
     pathname.startsWith('/coordinator') ||
     pathname.startsWith('/evaluator') ||
-    pathname.startsWith('/faculty');
+    pathname.startsWith('/faculty') ||
+    pathname.startsWith('/pending-approval');
 
   // Auth routes (login, register)
   const isAuthRoute = pathname.startsWith('/login') || pathname.startsWith('/register');
@@ -55,7 +56,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   if (isAuthRoute && user) {
-    return NextResponse.redirect(new URL('/admin', request.url));
+    return NextResponse.redirect(new URL('/', request.url));
   }
 
   return supabaseResponse;
