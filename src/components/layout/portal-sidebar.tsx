@@ -19,6 +19,10 @@ import {
   CalendarDays,
   LineChart,
   CalendarCheck,
+  TrendingUp,
+  FolderArchive,
+  GitCompare,
+  Sparkles,
 } from 'lucide-react';
 import { logout } from '@/features/auth/actions';
 
@@ -202,6 +206,22 @@ export function PortalSidebar({ userEmail, userName, roles }: PortalSidebarProps
                       <ShieldCheck className={iconClass('/admin/reviews')} />
                       <span>Review management</span>
                     </Link>
+                    <Link href="/admin/cqi" className={linkClass('/admin/cqi')}>
+                      <TrendingUp className={iconClass('/admin/cqi')} />
+                      <span>CQI Action Tracker</span>
+                    </Link>
+                    <Link href="/admin/dossier" className={linkClass('/admin/dossier')}>
+                      <FolderArchive className={iconClass('/admin/dossier')} />
+                      <span>SSR Exhibit Dossier</span>
+                    </Link>
+                    <Link href="/admin/crosswalk" className={linkClass('/admin/crosswalk')}>
+                      <GitCompare className={iconClass('/admin/crosswalk')} />
+                      <span>Multi-Agency Cross-Walk</span>
+                    </Link>
+                    <Link href="/admin/mock-survey" className={linkClass('/admin/mock-survey')}>
+                      <Sparkles className={iconClass('/admin/mock-survey')} />
+                      <span>Mock Survey Simulation</span>
+                    </Link>
                   </nav>
                 </div>
               </>
@@ -226,6 +246,22 @@ export function PortalSidebar({ userEmail, userName, roles }: PortalSidebarProps
                     <LineChart className={iconClass('/coordinator/compliance')} />
                     <span>Compliance tracking</span>
                   </Link>
+                  <Link href="/coordinator/cqi" className={linkClass('/coordinator/cqi')}>
+                    <TrendingUp className={iconClass('/coordinator/cqi')} />
+                    <span>CQI Action Tracker</span>
+                  </Link>
+                  <Link href="/coordinator/dossier" className={linkClass('/coordinator/dossier')}>
+                    <FolderArchive className={iconClass('/coordinator/dossier')} />
+                    <span>SSR Exhibit Dossier</span>
+                  </Link>
+                  <Link href="/coordinator/crosswalk" className={linkClass('/coordinator/crosswalk')}>
+                    <GitCompare className={iconClass('/coordinator/crosswalk')} />
+                    <span>Multi-Agency Cross-Walk</span>
+                  </Link>
+                  <Link href="/coordinator/mock-survey" className={linkClass('/coordinator/mock-survey')}>
+                    <Sparkles className={iconClass('/coordinator/mock-survey')} />
+                    <span>Mock Survey Simulation</span>
+                  </Link>
                 </nav>
               </div>
             )}
@@ -240,6 +276,10 @@ export function PortalSidebar({ userEmail, userName, roles }: PortalSidebarProps
                   <Link href="/evaluator/reviews" className={linkClass('/evaluator/reviews')}>
                     <Award className={iconClass('/evaluator/reviews')} />
                     <span>Review documents</span>
+                  </Link>
+                  <Link href="/evaluator/mock-survey" className={linkClass('/evaluator/mock-survey')}>
+                    <Sparkles className={iconClass('/evaluator/mock-survey')} />
+                    <span>Mock Survey Simulation</span>
                   </Link>
                 </nav>
               </div>

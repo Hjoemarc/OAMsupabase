@@ -18,6 +18,11 @@ import type {
   ReviewAssignmentItem,
   DocumentReviewItem,
   DocumentReviewStatus,
+  CQIActionPlan,
+  CrossWalkMapping,
+  MockSurveySession,
+  MockAuditFinding,
+  SSRDossier,
 } from '@/types/domain/accreditation';
 import {
   INITIAL_CYCLES,
@@ -33,6 +38,9 @@ import {
   INITIAL_TIMELINE,
   INITIAL_REVIEW_ASSIGNMENTS,
   INITIAL_DOCUMENT_REVIEWS,
+  INITIAL_CQI_PLANS,
+  INITIAL_CROSSWALK_MAPPINGS,
+  INITIAL_MOCK_SESSIONS,
 } from '../mock-data';
 import {
   summarizeArea,
@@ -41,6 +49,8 @@ import {
   canDeleteDepartment,
   canDeleteProgram,
 } from '../calculations';
+import { compileSSRDossier } from '@/features/reports/compiler';
+import { calculateMockSessionMetrics, convertFindingToCQIInput } from '@/features/mock-survey/calculations';
 
 const STORAGE_KEY = 'oams_state_v1';
 
@@ -95,6 +105,10 @@ interface AccreditationStoreContextType {
   timeline: ProgramTimelineRecord[];
   reviewAssignments: ReviewAssignmentItem[];
   documentReviews: DocumentReviewItem[];
+  cqiPlans: CQIActionPlan[];
+  crosswalkMappings: CrossWalkMapping[];
+  mockSessions: MockSurveySession[];
+  dossiers: SSRDossier[];
   isHydrated: boolean;
   createCycle: (input: CreateCycleInput) => AccreditationCycle;
   updateCycle: (id: string, updates: Partial<AccreditationCycle>) => void;
@@ -125,6 +139,19 @@ interface AccreditationStoreContextType {
   addTimelineRecord: (rec: Omit<ProgramTimelineRecord, 'id'>) => ProgramTimelineRecord;
   assignReviewer: (assignmentId: string, reviewerName: string) => void;
   updateDocumentReviewStatus: (id: string, status: DocumentReviewStatus, feedback?: string) => void;
+  // CQI Actions
+  createCQIPlan: (plan: Omit<CQIActionPlan, 'id'>) => CQIActionPlan;
+  updateCQIPlan: (id: string, updates: Partial<CQIActionPlan>) => void;
+  deleteCQIPlan: (id: string) => void;
+  // CrossWalk Actions
+  createCrossWalkMapping: (mapping: Omit<CrossWalkMapping, 'id'>) => CrossWalkMapping;
+  deleteCrossWalkMapping: (id: string) => void;
+  // Mock Survey Actions
+  createMockSession: (session: Omit<MockSurveySession, 'id' | 'findings' | 'grandMeanScore' | 'riskLevel'>) => MockSurveySession;
+  addMockFinding: (sessionId: string, finding: Omit<MockAuditFinding, 'id' | 'isResolved'>) => void;
+  promoteMockFindingToCQI: (findingId: string, sessionId: string) => CQIActionPlan | null;
+  // Dossier Actions
+  generateDossier: (cycleId: string, programId: string, executiveSummary?: string) => SSRDossier;
   resetToDefaults: () => void;
   getAreaParameters: (areaId: string) => CriterionParameter[];
   getParameterDocuments: (paramId: string) => EvidenceDocument[];
@@ -148,6 +175,10 @@ export function AccreditationStoreProvider({ children }: { children: React.React
   const [timeline, setTimeline] = useState<ProgramTimelineRecord[]>(INITIAL_TIMELINE);
   const [reviewAssignments, setReviewAssignments] = useState<ReviewAssignmentItem[]>(INITIAL_REVIEW_ASSIGNMENTS);
   const [documentReviews, setDocumentReviews] = useState<DocumentReviewItem[]>(INITIAL_DOCUMENT_REVIEWS);
+  const [cqiPlans, setCqiPlans] = useState<CQIActionPlan[]>(INITIAL_CQI_PLANS);
+  const [crosswalkMappings, setCrosswalkMappings] = useState<CrossWalkMapping[]>(INITIAL_CROSSWALK_MAPPINGS);
+  const [mockSessions, setMockSessions] = useState<MockSurveySession[]>(INITIAL_MOCK_SESSIONS);
+  const [dossiers, setDossiers] = useState<SSRDossier[]>([]);
   const [isHydrated, setIsHydrated] = useState(false);
 
   // Load from localStorage on mount
@@ -169,6 +200,10 @@ export function AccreditationStoreProvider({ children }: { children: React.React
         if (parsed.timeline) setTimeline(parsed.timeline);
         if (parsed.reviewAssignments) setReviewAssignments(parsed.reviewAssignments);
         if (parsed.documentReviews) setDocumentReviews(parsed.documentReviews);
+        if (parsed.cqiPlans) setCqiPlans(parsed.cqiPlans);
+        if (parsed.crosswalkMappings) setCrosswalkMappings(parsed.crosswalkMappings);
+        if (parsed.mockSessions) setMockSessions(parsed.mockSessions);
+        if (parsed.dossiers) setDossiers(parsed.dossiers);
       }
     } catch {
       // Ignore parse errors, fallback to defaults
@@ -195,6 +230,10 @@ export function AccreditationStoreProvider({ children }: { children: React.React
         timeline,
         reviewAssignments,
         documentReviews,
+        cqiPlans,
+        crosswalkMappings,
+        mockSessions,
+        dossiers,
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     } catch {
@@ -214,6 +253,10 @@ export function AccreditationStoreProvider({ children }: { children: React.React
     timeline,
     reviewAssignments,
     documentReviews,
+    cqiPlans,
+    crosswalkMappings,
+    mockSessions,
+    dossiers,
     isHydrated,
   ]);
 
@@ -537,6 +580,148 @@ export function AccreditationStoreProvider({ children }: { children: React.React
     []
   );
 
+  // CQI Actions
+  const createCQIPlan = useCallback(
+    (input: Omit<CQIActionPlan, 'id'>): CQIActionPlan => {
+      const newPlan: CQIActionPlan = {
+        ...input,
+        id: `cqi-${Date.now()}`,
+      };
+      setCqiPlans((prev) => [newPlan, ...prev]);
+      return newPlan;
+    },
+    []
+  );
+
+  const updateCQIPlan = useCallback((id: string, updates: Partial<CQIActionPlan>) => {
+    setCqiPlans((prev) =>
+      prev.map((plan) => (plan.id === id ? { ...plan, ...updates } : plan))
+    );
+  }, []);
+
+  const deleteCQIPlan = useCallback((id: string) => {
+    setCqiPlans((prev) => prev.filter((p) => p.id !== id));
+  }, []);
+
+  // CrossWalk Actions
+  const createCrossWalkMapping = useCallback(
+    (input: Omit<CrossWalkMapping, 'id'>): CrossWalkMapping => {
+      const newMapping: CrossWalkMapping = {
+        ...input,
+        id: `cw-${Date.now()}`,
+      };
+      setCrosswalkMappings((prev) => [newMapping, ...prev]);
+      return newMapping;
+    },
+    []
+  );
+
+  const deleteCrossWalkMapping = useCallback((id: string) => {
+    setCrosswalkMappings((prev) => prev.filter((m) => m.id !== id));
+  }, []);
+
+  // Mock Survey Actions
+  const createMockSession = useCallback(
+    (
+      input: Omit<
+        MockSurveySession,
+        'id' | 'findings' | 'grandMeanScore' | 'riskLevel'
+      >
+    ): MockSurveySession => {
+      const newSession: MockSurveySession = {
+        ...input,
+        id: `mock-${Date.now()}`,
+        grandMeanScore: null,
+        riskLevel: 'Low Risk',
+        findings: [],
+      };
+      setMockSessions((prev) => [newSession, ...prev]);
+      return newSession;
+    },
+    []
+  );
+
+  const addMockFinding = useCallback(
+    (
+      sessionId: string,
+      findingInput: Omit<MockAuditFinding, 'id' | 'isResolved'>
+    ) => {
+      setMockSessions((prev) =>
+        prev.map((session) => {
+          if (session.id !== sessionId) return session;
+          const newFinding: MockAuditFinding = {
+            ...findingInput,
+            id: `mock-f-${Date.now()}`,
+            isResolved: false,
+          };
+          const updatedFindings = [...session.findings, newFinding];
+          const metrics = calculateMockSessionMetrics(updatedFindings);
+          return {
+            ...session,
+            findings: updatedFindings,
+            grandMeanScore: metrics.grandMeanScore,
+            riskLevel: metrics.riskLevel,
+          };
+        })
+      );
+    },
+    []
+  );
+
+  const promoteMockFindingToCQI = useCallback(
+    (findingId: string, sessionId: string): CQIActionPlan | null => {
+      const session = mockSessions.find((s) => s.id === sessionId);
+      if (!session) return null;
+      const finding = session.findings.find((f) => f.id === findingId);
+      if (!finding) return null;
+
+      const cqiInput = convertFindingToCQIInput(finding, session);
+      const newPlan = createCQIPlan(cqiInput);
+
+      // Mark finding as promoted and resolved
+      setMockSessions((prev) =>
+        prev.map((s) => {
+          if (s.id !== sessionId) return s;
+          return {
+            ...s,
+            findings: s.findings.map((f) =>
+              f.id === findingId
+                ? { ...f, isResolved: true, promotedToCQIId: newPlan.id }
+                : f
+            ),
+          };
+        })
+      );
+
+      return newPlan;
+    },
+    [mockSessions, createCQIPlan]
+  );
+
+  // Dossier Actions
+  const generateDossier = useCallback(
+    (cycleId: string, programId: string, executiveSummary?: string): SSRDossier => {
+      const cycle = cycles.find((c) => c.id === cycleId);
+      const program = programs.find((p) => p.id === programId);
+      if (!cycle || !program) {
+        throw new Error('Cycle or program not found for dossier compilation');
+      }
+
+      const newDossier = compileSSRDossier({
+        cycle,
+        program,
+        areas,
+        parameters,
+        documents,
+        executiveSummary,
+      });
+
+      setDossiers((prev) => [newDossier, ...prev.filter((d) => d.id !== newDossier.id)]);
+      return newDossier;
+    },
+    [cycles, programs, areas, parameters, documents]
+  );
+
   const resetToDefaults = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
     setCycles(INITIAL_CYCLES);
@@ -552,6 +737,10 @@ export function AccreditationStoreProvider({ children }: { children: React.React
     setTimeline(INITIAL_TIMELINE);
     setReviewAssignments(INITIAL_REVIEW_ASSIGNMENTS);
     setDocumentReviews(INITIAL_DOCUMENT_REVIEWS);
+    setCqiPlans(INITIAL_CQI_PLANS);
+    setCrosswalkMappings(INITIAL_CROSSWALK_MAPPINGS);
+    setMockSessions(INITIAL_MOCK_SESSIONS);
+    setDossiers([]);
   }, []);
 
   const getAreaParameters = useCallback(
@@ -592,6 +781,10 @@ export function AccreditationStoreProvider({ children }: { children: React.React
       timeline,
       reviewAssignments,
       documentReviews,
+      cqiPlans,
+      crosswalkMappings,
+      mockSessions,
+      dossiers,
       isHydrated,
       createCycle,
       updateCycle,
@@ -622,6 +815,15 @@ export function AccreditationStoreProvider({ children }: { children: React.React
       addTimelineRecord,
       assignReviewer,
       updateDocumentReviewStatus,
+      createCQIPlan,
+      updateCQIPlan,
+      deleteCQIPlan,
+      createCrossWalkMapping,
+      deleteCrossWalkMapping,
+      createMockSession,
+      addMockFinding,
+      promoteMockFindingToCQI,
+      generateDossier,
       resetToDefaults,
       getAreaParameters,
       getParameterDocuments,
@@ -642,6 +844,10 @@ export function AccreditationStoreProvider({ children }: { children: React.React
       timeline,
       reviewAssignments,
       documentReviews,
+      cqiPlans,
+      crosswalkMappings,
+      mockSessions,
+      dossiers,
       isHydrated,
       createCycle,
       updateCycle,
@@ -672,6 +878,15 @@ export function AccreditationStoreProvider({ children }: { children: React.React
       addTimelineRecord,
       assignReviewer,
       updateDocumentReviewStatus,
+      createCQIPlan,
+      updateCQIPlan,
+      deleteCQIPlan,
+      createCrossWalkMapping,
+      deleteCrossWalkMapping,
+      createMockSession,
+      addMockFinding,
+      promoteMockFindingToCQI,
+      generateDossier,
       resetToDefaults,
       getAreaParameters,
       getParameterDocuments,

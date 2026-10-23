@@ -23,6 +23,11 @@ Canonical vocabulary for the Online Accreditation Management System (OAMS). Use 
 - **Compliance Tracking**: Aggregate dashboard monitoring percentage compliance and readiness breakdown across programs, cycles, and indicators.
 - **Review Management**: Workflow for assigning internal QA reviewers, reviewing submitted evidence files, and delivering revision feedback.
 - **Accreditation Timeline / Program History**: Historic and forward-looking schedule tracking survey dates, validity terms, and level transitions (Candidate to Level IV).
+- **CQI (Continuous Quality Improvement) Action Plan**: Formal post-accreditation remediation commitment mapping evaluator deficiencies and recommendations to time-bound actions, responsible officers, budget allocations, and verification artifacts.
+- **Self-Survey Report (SSR) Dossier**: Compiled institutional submission package comprising executive summary, parameter scorecards, area narratives, and indexed digital exhibits with checksum verification.
+- **Digital Exhibit Index**: Cryptographically verifiable catalog of evidence artifacts cross-referenced to specific criteria parameters for external audit teams.
+- **Multi-Agency Cross-Walk**: Matrix mapping a single evidence artifact across multiple accrediting bodies (e.g., AACCUP, CHED, ISO 9001, PTC) to eliminate redundant uploads.
+- **Mock Survey / Simulation**: Sandboxed internal pre-audit inspection replicating external accreditor evaluation to detect evidence deficiencies and score risks prior to official survey visits.
 
 ## Roles
 

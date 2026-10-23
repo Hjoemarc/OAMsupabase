@@ -201,3 +201,130 @@ export interface ProgramTimelineRecord {
   accreditingBody: AccreditationBody;
   status: 'Accredited' | 'Candidate' | 'Under Re-accreditation' | 'Expired';
 }
+
+export type CQIActionPlanStatus =
+  | 'Not Started'
+  | 'In Progress'
+  | 'Evidence Submitted'
+  | 'Verified Compliant'
+  | 'Overdue';
+
+export interface CQIActionPlan {
+  id: string;
+  cycleId: string;
+  programId: string;
+  programCode: string;
+  areaNumber: AreaNumber;
+  parameterCode: string;
+  deficiencyOrRecommendation: string;
+  actionPlanTitle: string;
+  plannedActions: string;
+  responsiblePerson: string;
+  targetCompletionDate: string;
+  allocatedBudget: number;
+  status: CQIActionPlanStatus;
+  evidenceIds: string[];
+  complianceRemarks?: string;
+  verificationLead?: string;
+  lastAuditedAt?: string;
+}
+
+export type SSRDossierStatus = 'Draft' | 'Compiled' | 'Locked' | 'Published';
+
+export interface SSRExhibitItem {
+  id: string;
+  exhibitCode: string; // e.g. "EX-A3-01"
+  title: string;
+  category: string;
+  areaNumber: AreaNumber;
+  parameterCode: string;
+  documentId: string;
+  fileName: string;
+  fileSize: string;
+  sha256Checksum: string;
+  verificationStatus: 'Pending Review' | 'Accepted' | 'Needs Revision';
+}
+
+export interface SSRDossierSection {
+  areaNumber: AreaNumber;
+  areaTitle: string;
+  chairName: string;
+  selfMeanScore: number | null;
+  evaluatorMeanScore: number | null;
+  parameterCount: number;
+  narrativeSummary: string;
+  exhibits: SSRExhibitItem[];
+}
+
+export interface SSRDossier {
+  id: string;
+  cycleId: string;
+  cycleName: string;
+  programId: string;
+  programName: string;
+  programCode: string;
+  academicYear: string;
+  title: string;
+  targetLevel: AccreditationLevel;
+  executiveSummary: string;
+  status: SSRDossierStatus;
+  compiledAt: string;
+  watermark: string;
+  sections: SSRDossierSection[];
+  totalExhibits: number;
+}
+
+export type CrossWalkAgency = 'AACCUP' | 'CHED' | 'ISO 9001' | 'PTC' | 'ALCUCOA' | 'PAASCU';
+export type EquivalenceConfidence = 'Direct Match' | 'Partial Overlap' | 'Supporting Context';
+
+export interface CrossWalkMapping {
+  id: string;
+  documentId: string;
+  documentTitle: string;
+  fileName: string;
+  category: string;
+  primaryAgency: CrossWalkAgency;
+  primaryCode: string; // e.g. "Area III - Curriculum"
+  targetAgency: CrossWalkAgency;
+  targetCode: string; // e.g. "CHED CMO 25 Sec 8"
+  targetStandardTitle: string;
+  equivalenceConfidence: EquivalenceConfidence;
+  mappedBy: string;
+  mappedAt: string;
+  notes?: string;
+}
+
+export type MockSurveyStatus = 'Scheduled' | 'In Progress' | 'Concluded';
+export type MockSurveyRiskLevel = 'Low Risk' | 'Moderate Risk' | 'Critical Risk';
+export type MockFindingType = 'Critical Gap' | 'Minor Deficiency' | 'Commendable Strength';
+
+export interface MockAuditFinding {
+  id: string;
+  sessionId: string;
+  areaNumber: AreaNumber;
+  parameterCode: string;
+  mockScore: number; // 1.0 to 5.0
+  findingType: MockFindingType;
+  observation: string;
+  urgentActionNeeded: string;
+  auditorName: string;
+  isResolved: boolean;
+  promotedToCQIId?: string;
+}
+
+export interface MockSurveySession {
+  id: string;
+  cycleId: string;
+  cycleName: string;
+  programId: string;
+  programCode: string;
+  programName: string;
+  title: string;
+  auditTeamLead: string;
+  scheduledDate: string;
+  status: MockSurveyStatus;
+  grandMeanScore: number | null;
+  riskLevel: MockSurveyRiskLevel;
+  findings: MockAuditFinding[];
+}
+
