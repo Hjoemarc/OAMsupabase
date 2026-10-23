@@ -16,25 +16,24 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import {
-  ShieldAlert,
+  TrendingUp,
+  Plus,
+  Search,
   CheckCircle2,
   Clock,
   AlertTriangle,
-  Plus,
-  Search,
-  FileText,
-  DollarSign,
-  TrendingUp,
-  Trash2,
   Calendar,
   User,
-  ArrowRight,
+  Trash2,
+  DollarSign,
+  ShieldAlert,
+  ClipboardList,
 } from 'lucide-react';
 import { calculateCQIStats, filterCQIPlans, evaluatePlanOverdue } from '../calculations';
 import type { CQIActionPlan, CQIActionPlanStatus, AreaNumber } from '@/types/domain/accreditation';
 
 export function CQITracker() {
-  const { cqiPlans, programs, documents, createCQIPlan, updateCQIPlan, deleteCQIPlan } =
+  const { cqiPlans, programs, createCQIPlan, updateCQIPlan, deleteCQIPlan } =
     useAccreditationStore();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,9 +52,6 @@ export function CQITracker() {
   const [newLead, setNewLead] = useState('');
   const [newTargetDate, setNewTargetDate] = useState('');
   const [newBudget, setNewBudget] = useState<number>(0);
-
-  // Dialog State for linking evidence
-  const [activePlanForEvidence, setActivePlanForEvidence] = useState<CQIActionPlan | null>(null);
 
   const stats = useMemo(() => calculateCQIStats(cqiPlans), [cqiPlans]);
 
@@ -91,7 +87,6 @@ export function CQITracker() {
     });
 
     setIsCreateOpen(false);
-    // Reset form
     setNewTitle('');
     setNewDeficiency('');
     setNewActions('');
@@ -99,57 +94,63 @@ export function CQITracker() {
     setNewBudget(0);
   };
 
-  const getStatusBadge = (plan: CQIActionPlan) => {
+  const renderStatusBadge = (plan: CQIActionPlan) => {
     const isOverdue = evaluatePlanOverdue(plan.targetCompletionDate, plan.status);
     if (isOverdue || plan.status === 'Overdue') {
       return (
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[var(--radius-control)] text-xs font-medium bg-red-500/10 text-red-600 border border-red-200">
-          <AlertTriangle className="w-3 h-3" /> Overdue
-        </span>
+        <Badge tone="danger" size="sm">
+          <AlertTriangle className="w-3 h-3 mr-1" />
+          Overdue
+        </Badge>
       );
     }
 
     switch (plan.status) {
       case 'Verified Compliant':
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[var(--radius-control)] text-xs font-medium bg-emerald-500/10 text-emerald-600 border border-emerald-200">
-            <CheckCircle2 className="w-3 h-3" /> Verified Compliant
-          </span>
+          <Badge tone="success" size="sm">
+            <CheckCircle2 className="w-3 h-3 mr-1" />
+            Verified compliant
+          </Badge>
         );
       case 'Evidence Submitted':
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[var(--radius-control)] text-xs font-medium bg-blue-500/10 text-blue-600 border border-blue-200">
-            <Clock className="w-3 h-3" /> Evidence Submitted
-          </span>
+          <Badge tone="info" size="sm">
+            <Clock className="w-3 h-3 mr-1" />
+            Evidence submitted
+          </Badge>
         );
       case 'In Progress':
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[var(--radius-control)] text-xs font-medium bg-amber-500/10 text-amber-600 border border-amber-200">
-            <Clock className="w-3 h-3" /> In Progress
-          </span>
+          <Badge tone="warning" size="sm">
+            <Clock className="w-3 h-3 mr-1" />
+            In progress
+          </Badge>
         );
       case 'Not Started':
       default:
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[var(--radius-control)] text-xs font-medium bg-[var(--surface-muted)] text-[var(--text-muted)] border border-[var(--border)]">
-            Not Started
-          </span>
+          <Badge tone="neutral" size="sm">
+            Not started
+          </Badge>
         );
     }
   };
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[var(--border)]">
         <div>
-          <h1 className="text-xl font-semibold text-[var(--foreground)] tracking-tight">
-            Continuous Quality Improvement (CQI) Tracker
+          <h1 className="font-[family-name:var(--font-display)] text-2xl font-medium text-[var(--foreground)] tracking-tight flex items-center gap-2.5">
+            <TrendingUp className="w-6 h-6 text-[var(--accent)] stroke-[1.75]" />
+            Continuous quality improvement
           </h1>
-          <p className="text-xs text-[var(--text-secondary)] mt-1">
-            Post-accreditation closed-loop action plan management, deficiency remediation, and compliance evidence linkage.
+          <p className="font-[family-name:var(--font-body)] text-xs text-[var(--text-muted)] mt-1">
+            Post-accreditation action plan tracking, evaluator deficiency remediation, and compliance evidence linkage
           </p>
         </div>
+
         <Button
           onClick={() => {
             if (programs.length > 0 && !newProgramId) {
@@ -157,185 +158,160 @@ export function CQITracker() {
             }
             setIsCreateOpen(true);
           }}
-          className="inline-flex items-center gap-2 bg-[var(--accent)] hover:bg-[var(--accent)]/90 text-white text-xs font-medium px-3 py-2 rounded-[var(--radius-control)] transition-colors shadow-xs"
+          size="sm"
+          className="gap-1.5 shrink-0"
         >
-          <Plus className="w-4 h-4 stroke-[2]" />
-          <span>New CQI Action Plan</span>
+          <Plus className="w-4 h-4 stroke-[1.75]" />
+          <span>New action plan</span>
         </Button>
       </div>
 
-      {/* KPI Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
-        <Card className="border-[var(--border)] bg-[var(--surface)] shadow-xs">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider">
-                Resolution Rate
-              </span>
-              <TrendingUp className="w-4 h-4 text-emerald-600" />
-            </div>
-            <div className="text-2xl font-semibold text-[var(--foreground)] mt-2">
-              {stats.resolutionPercentage}%
-            </div>
-            <div className="w-full bg-[var(--surface-muted)] h-1.5 rounded-full mt-2.5 overflow-hidden">
-              <div
-                className="bg-emerald-500 h-full rounded-full transition-all duration-300"
-                style={{ width: `${stats.resolutionPercentage}%` }}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-[var(--border)] bg-[var(--surface)] shadow-xs">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider">
-                Total Action Plans
-              </span>
-              <FileText className="w-4 h-4 text-[var(--text-muted)]" />
-            </div>
-            <div className="text-2xl font-semibold text-[var(--foreground)] mt-2">
+      {/* 4 Summary Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
+        <Card>
+          <CardHeader className="pb-2">
+            <span className="text-xs font-medium text-[var(--text-secondary)]">Total action plans</span>
+            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">
               {stats.totalPlans}
-            </div>
-            <span className="text-xs text-[var(--text-secondary)] mt-1 block">
-              Across all assigned areas
-            </span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <p className="text-xs text-[var(--text-muted)]">Across all evaluated standard areas</p>
           </CardContent>
         </Card>
 
-        <Card className="border-[var(--border)] bg-[var(--surface)] shadow-xs">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider">
-                Verified Compliant
-              </span>
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-            </div>
-            <div className="text-2xl font-semibold text-emerald-600 mt-2">
-              {stats.verifiedCompliantCount}
-            </div>
-            <span className="text-xs text-[var(--text-secondary)] mt-1 block">
-              Auditor sign-off achieved
-            </span>
+        <Card>
+          <CardHeader className="pb-2">
+            <span className="text-xs font-medium text-[var(--text-secondary)]">Resolution progress</span>
+            <CardTitle className="text-2xl font-medium text-emerald-700 tabular-nums">
+              {stats.resolutionPercentage}%
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <p className="text-xs text-[var(--text-muted)]">
+              {stats.verifiedCompliantCount} of {stats.totalPlans} deficiencies verified
+            </p>
           </CardContent>
         </Card>
 
-        <Card className="border-[var(--border)] bg-[var(--surface)] shadow-xs">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider">
-                Overdue Commitments
-              </span>
-              <ShieldAlert className="w-4 h-4 text-red-500" />
-            </div>
-            <div className="text-2xl font-semibold text-red-600 mt-2">
-              {stats.overdueCount}
-            </div>
-            <span className="text-xs text-red-500/80 mt-1 block">
-              Past scheduled milestone
-            </span>
-          </CardContent>
-        </Card>
-
-        <Card className="border-[var(--border)] bg-[var(--surface)] shadow-xs">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider">
-                Remediation Budget
-              </span>
-              <DollarSign className="w-4 h-4 text-blue-600" />
-            </div>
-            <div className="text-2xl font-semibold text-[var(--foreground)] mt-2">
+        <Card>
+          <CardHeader className="pb-2">
+            <span className="text-xs font-medium text-[var(--text-secondary)]">Remediation budget</span>
+            <CardTitle className="text-2xl font-medium text-[var(--accent)] tabular-nums">
               PHP {(stats.totalAllocatedBudget / 1000).toFixed(0)}k
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <p className="text-xs text-[var(--text-muted)]">Committed institutional funds</p>
+          </CardContent>
+        </Card>
+
+        <Card className={stats.overdueCount > 0 ? 'border-l-4 border-l-red-500' : ''}>
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <span className={`text-xs font-medium ${stats.overdueCount > 0 ? 'text-red-600' : 'text-[var(--text-secondary)]'}`}>
+                Overdue milestones
+              </span>
+              {stats.overdueCount > 0 && <ShieldAlert className="w-4 h-4 text-red-500 stroke-[1.75]" />}
             </div>
-            <span className="text-xs text-[var(--text-secondary)] mt-1 block">
-              Committed quality funds
-            </span>
+            <CardTitle className={`text-2xl font-medium tabular-nums ${stats.overdueCount > 0 ? 'text-red-600' : 'text-[var(--foreground)]'}`}>
+              {stats.overdueCount}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <p className="text-xs text-[var(--text-muted)]">Past scheduled target completion</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Filter and Search Bar */}
-      <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between bg-[var(--surface)] p-3 rounded-[var(--radius-panel)] border border-[var(--border)] shadow-xs">
-        <div className="flex flex-wrap items-center gap-2.5 flex-1">
-          <div className="relative min-w-[200px] flex-1">
-            <Search className="w-4 h-4 absolute left-3 top-2.5 text-[var(--text-muted)]" />
-            <Input
-              type="text"
-              placeholder="Search deficiency, plan title, or lead..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 text-xs h-9 bg-[var(--surface)] border-[var(--border)]"
-            />
+      {/* Main Table Card */}
+      <Card className="overflow-hidden">
+        {/* Toolbar Header */}
+        <div className="p-4 border-b border-[var(--border)] flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <ClipboardList className="w-4 h-4 text-[var(--accent)] stroke-[1.75]" />
+            <h2 className="font-[family-name:var(--font-display)] text-sm font-medium text-[var(--foreground)]">
+              Action plan registry
+            </h2>
+            <Badge tone="neutral" size="sm">
+              {filteredPlans.length}
+            </Badge>
           </div>
 
-          <select
-            value={selectedProgram}
-            onChange={(e) => setSelectedProgram(e.target.value)}
-            className="text-xs h-9 px-3 rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)] focus:outline-hidden"
-          >
-            <option value="All">All Programs</option>
-            {programs.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.code} - {p.name}
-              </option>
-            ))}
-          </select>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="relative w-full sm:w-56">
+              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] stroke-[1.75]" />
+              <Input
+                type="text"
+                placeholder="Search action plans..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-8 text-xs h-8"
+              />
+            </div>
 
-          <select
-            value={selectedArea}
-            onChange={(e) => setSelectedArea(e.target.value)}
-            className="text-xs h-9 px-3 rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)] focus:outline-hidden"
-          >
-            <option value="All">All Areas (1-10)</option>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-              <option key={num} value={num}>
-                Area {num}
-              </option>
-            ))}
-          </select>
+            <select
+              value={selectedProgram}
+              onChange={(e) => setSelectedProgram(e.target.value)}
+              className="text-xs h-8 px-2.5 rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)] focus:outline-hidden"
+            >
+              <option value="All">All programs</option>
+              {programs.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.code}
+                </option>
+              ))}
+            </select>
 
-          <select
-            value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-            className="text-xs h-9 px-3 rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)] focus:outline-hidden"
-          >
-            <option value="All">All Statuses</option>
-            <option value="Not Started">Not Started</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Evidence Submitted">Evidence Submitted</option>
-            <option value="Verified Compliant">Verified Compliant</option>
-            <option value="Overdue">Overdue</option>
-          </select>
+            <select
+              value={selectedArea}
+              onChange={(e) => setSelectedArea(e.target.value)}
+              className="text-xs h-8 px-2.5 rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)] focus:outline-hidden"
+            >
+              <option value="All">All areas (1-10)</option>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                <option key={num} value={num}>
+                  Area {num}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              className="text-xs h-8 px-2.5 rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)] focus:outline-hidden"
+            >
+              <option value="All">All statuses</option>
+              <option value="In Progress">In progress</option>
+              <option value="Evidence Submitted">Evidence submitted</option>
+              <option value="Verified Compliant">Verified compliant</option>
+              <option value="Overdue">Overdue</option>
+              <option value="Not Started">Not started</option>
+            </select>
+          </div>
         </div>
 
-        <span className="text-xs text-[var(--text-muted)] self-center px-1">
-          Showing {filteredPlans.length} of {cqiPlans.length} plans
-        </span>
-      </div>
-
-      {/* Action Plans Table */}
-      <Card className="border-[var(--border)] bg-[var(--surface)] shadow-xs overflow-hidden">
+        {/* Table Content */}
         <div className="overflow-x-auto">
           <Table>
             <TableHeader className="bg-[var(--surface-muted)]">
               <TableRow className="border-b border-[var(--border)]">
-                <TableHead className="text-xs font-semibold text-[var(--text-muted)] w-28">
+                <TableHead className="font-[family-name:var(--font-display)] text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider w-28">
                   Program & Area
                 </TableHead>
-                <TableHead className="text-xs font-semibold text-[var(--text-muted)] min-w-[240px]">
+                <TableHead className="font-[family-name:var(--font-display)] text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider min-w-[260px]">
                   Deficiency & Action Plan
                 </TableHead>
-                <TableHead className="text-xs font-semibold text-[var(--text-muted)] w-44">
+                <TableHead className="font-[family-name:var(--font-display)] text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider w-44">
                   Lead & Target Date
                 </TableHead>
-                <TableHead className="text-xs font-semibold text-[var(--text-muted)] w-28">
+                <TableHead className="font-[family-name:var(--font-display)] text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider w-32">
                   Budget
                 </TableHead>
-                <TableHead className="text-xs font-semibold text-[var(--text-muted)] w-36">
+                <TableHead className="font-[family-name:var(--font-display)] text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider w-36">
                   Status
                 </TableHead>
-                <TableHead className="text-xs font-semibold text-[var(--text-muted)] w-32 text-right">
+                <TableHead className="font-[family-name:var(--font-display)] text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider w-36 text-right">
                   Actions
                 </TableHead>
               </TableRow>
@@ -343,8 +319,8 @@ export function CQITracker() {
             <TableBody>
               {filteredPlans.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-10 text-xs text-[var(--text-muted)]">
-                    No CQI action plans matching the selected criteria.
+                  <TableCell colSpan={6} className="text-center py-10 font-[family-name:var(--font-body)] text-xs text-[var(--text-muted)]">
+                    No CQI action plans matching the current filters.
                   </TableCell>
                 </TableRow>
               ) : (
@@ -353,36 +329,36 @@ export function CQITracker() {
                   return (
                     <TableRow
                       key={plan.id}
-                      className="border-b border-[var(--border-subtle)] hover:bg-[var(--surface-muted)]/50 transition-colors"
+                      className="border-b border-[var(--border)] hover:bg-[var(--surface-muted)]/50 transition-colors"
                     >
                       <TableCell className="align-top py-3.5">
                         <span className="font-semibold text-xs text-[var(--foreground)] block">
                           {plan.programCode}
                         </span>
                         <div className="flex items-center gap-1.5 mt-1">
-                          <span className="text-[11px] font-medium px-1.5 py-0.5 rounded bg-[var(--surface-muted)] text-[var(--text-secondary)] border border-[var(--border)]">
+                          <Badge tone="neutral" size="sm">
                             Area {plan.areaNumber}
-                          </span>
+                          </Badge>
                           <span className="text-[11px] text-[var(--text-muted)]">
                             {plan.parameterCode}
                           </span>
                         </div>
                       </TableCell>
 
-                      <TableCell className="align-top py-3.5">
+                      <TableCell className="align-top py-3.5 space-y-1">
                         <div className="text-xs font-medium text-[var(--foreground)]">
                           {plan.actionPlanTitle}
                         </div>
-                        <p className="text-[11px] text-[var(--text-secondary)] mt-1 line-clamp-2">
-                          <strong className="text-[var(--text-muted)]">Deficiency:</strong>{' '}
+                        <p className="text-[11px] text-[var(--text-secondary)] line-clamp-2">
+                          <strong className="text-[var(--text-muted)] font-normal">Finding:</strong>{' '}
                           {plan.deficiencyOrRecommendation}
                         </p>
-                        <p className="text-[11px] text-[var(--text-muted)] mt-1 line-clamp-2">
-                          <strong className="text-[var(--text-muted)]">Intervention:</strong>{' '}
+                        <p className="text-[11px] text-[var(--text-muted)] line-clamp-2">
+                          <strong className="text-[var(--text-muted)] font-normal">Intervention:</strong>{' '}
                           {plan.plannedActions}
                         </p>
                         {plan.complianceRemarks && (
-                          <span className="inline-block text-[10px] text-blue-600 bg-blue-500/10 px-1.5 py-0.5 rounded mt-1.5">
+                          <span className="inline-block text-[10px] text-blue-700 bg-blue-500/10 px-1.5 py-0.5 rounded mt-1">
                             {plan.complianceRemarks}
                           </span>
                         )}
@@ -404,16 +380,16 @@ export function CQITracker() {
                       </TableCell>
 
                       <TableCell className="align-top py-3.5">
-                        <span className="text-xs font-semibold text-[var(--foreground)] tabular-nums">
+                        <span className="text-xs font-medium text-[var(--foreground)] tabular-nums">
                           PHP {plan.allocatedBudget.toLocaleString()}
                         </span>
                       </TableCell>
 
                       <TableCell className="align-top py-3.5">
-                        {getStatusBadge(plan)}
+                        {renderStatusBadge(plan)}
                       </TableCell>
 
-                      <TableCell className="align-top py-3.5 text-right space-x-1">
+                      <TableCell className="align-top py-3.5 text-right space-x-1.5">
                         <select
                           value={plan.status}
                           onChange={(e) =>
@@ -427,19 +403,19 @@ export function CQITracker() {
                           }
                           className="text-[11px] py-1 px-2 rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)] focus:outline-hidden"
                         >
-                          <option value="Not Started">Not Started</option>
-                          <option value="In Progress">In Progress</option>
-                          <option value="Evidence Submitted">Evidence Submitted</option>
-                          <option value="Verified Compliant">Verified Compliant</option>
+                          <option value="Not Started">Not started</option>
+                          <option value="In Progress">In progress</option>
+                          <option value="Evidence Submitted">Evidence submitted</option>
+                          <option value="Verified Compliant">Verified compliant</option>
                           <option value="Overdue">Overdue</option>
                         </select>
 
                         <button
                           onClick={() => deleteCQIPlan(plan.id)}
-                          title="Delete plan"
+                          title="Delete action plan"
                           className="p-1 rounded-[var(--radius-control)] text-[var(--text-muted)] hover:text-red-600 hover:bg-red-500/10 transition-colors inline-flex items-center justify-center"
                         >
-                          <Trash2 className="w-3.5 h-3.5" />
+                          <Trash2 className="w-3.5 h-3.5 stroke-[1.75]" />
                         </button>
                       </TableCell>
                     </TableRow>
@@ -453,14 +429,12 @@ export function CQITracker() {
 
       {/* Create New CQI Action Plan Dialog */}
       <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-        <DialogContent title="Create New CQI Action Plan" className="max-w-xl bg-[var(--surface)] border-[var(--border)] p-6">
-          <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]">
-            <h2 className="text-sm font-semibold text-[var(--foreground)]">
-              Create New CQI Action Plan
-            </h2>
-          </div>
-
-          <form onSubmit={handleCreateSubmit} className="space-y-4 pt-3">
+        <DialogContent
+          title="Create New CQI Action Plan"
+          description="Register a new post-accreditation institutional action plan to address specific evaluator recommendations or benchmark deficiencies."
+          className="max-w-xl"
+        >
+          <form onSubmit={handleCreateSubmit} className="space-y-4 pt-2">
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
@@ -501,7 +475,7 @@ export function CQITracker() {
                     value={newParameterCode}
                     onChange={(e) => setNewParameterCode(e.target.value)}
                     placeholder="e.g. Parameter A"
-                    className="w-1/2 text-xs h-9 bg-[var(--surface)] border-[var(--border)]"
+                    className="w-1/2 text-xs h-9"
                     required
                   />
                 </div>
@@ -517,14 +491,14 @@ export function CQITracker() {
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
                 placeholder="e.g. Capstone Industry Advisory Review Formalization"
-                className="text-xs h-9 bg-[var(--surface)] border-[var(--border)]"
+                className="text-xs h-9"
                 required
               />
             </div>
 
             <div>
               <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
-                Accreditation Deficiency / Evaluator Recommendation
+                Evaluator Recommendation / Deficient Benchmark
               </label>
               <textarea
                 value={newDeficiency}
@@ -560,7 +534,7 @@ export function CQITracker() {
                   value={newLead}
                   onChange={(e) => setNewLead(e.target.value)}
                   placeholder="e.g. Dean, CICS"
-                  className="text-xs h-9 bg-[var(--surface)] border-[var(--border)]"
+                  className="text-xs h-9"
                   required
                 />
               </div>
@@ -573,7 +547,7 @@ export function CQITracker() {
                   type="date"
                   value={newTargetDate}
                   onChange={(e) => setNewTargetDate(e.target.value)}
-                  className="text-xs h-9 bg-[var(--surface)] border-[var(--border)]"
+                  className="text-xs h-9"
                   required
                 />
               </div>
@@ -587,7 +561,7 @@ export function CQITracker() {
                   value={newBudget}
                   onChange={(e) => setNewBudget(Number(e.target.value))}
                   placeholder="0"
-                  className="text-xs h-9 bg-[var(--surface)] border-[var(--border)]"
+                  className="text-xs h-9"
                 />
               </div>
             </div>
@@ -596,16 +570,17 @@ export function CQITracker() {
               <Button
                 type="button"
                 variant="outline"
+                size="sm"
                 onClick={() => setIsCreateOpen(false)}
-                className="text-xs h-9 px-3 border-[var(--border)]"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                className="text-xs h-9 px-4 bg-[var(--accent)] hover:bg-[var(--accent)]/90 text-white font-medium"
+                size="sm"
+                className="gap-1.5"
               >
-                Create Action Plan
+                Create action plan
               </Button>
             </div>
           </form>

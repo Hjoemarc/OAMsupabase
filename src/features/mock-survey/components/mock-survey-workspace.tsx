@@ -16,17 +16,15 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import {
+  Sparkles,
   ShieldAlert,
   CheckCircle2,
   AlertTriangle,
   Award,
   Plus,
   ArrowRight,
-  TrendingUp,
   UserCheck,
-  Calendar,
   Layers,
-  Sparkles,
 } from 'lucide-react';
 import { calculateMockSessionMetrics } from '../calculations';
 import type {
@@ -68,7 +66,7 @@ export function MockSurveyWorkspace() {
   const [newUrgentAction, setNewUrgentAction] = useState('');
   const [newAuditorName, setNewAuditorName] = useState('');
 
-  // Toast / feedback message
+  // Feedback notification
   const [promotionNotice, setPromotionNotice] = useState<string | null>(null);
 
   const activeSession: MockSurveySession | undefined = useMemo(() => {
@@ -109,7 +107,6 @@ export function MockSurveyWorkspace() {
 
     setSelectedSessionId(created.id);
     setIsSessionModalOpen(false);
-    // Reset form
     setNewSessionTitle('');
     setNewAuditLead('');
   };
@@ -130,7 +127,6 @@ export function MockSurveyWorkspace() {
     });
 
     setIsFindingModalOpen(false);
-    // Reset form
     setNewObservation('');
     setNewUrgentAction('');
   };
@@ -140,73 +136,81 @@ export function MockSurveyWorkspace() {
     const promotedPlan = promoteMockFindingToCQI(findingId, activeSession.id);
     if (promotedPlan) {
       setPromotionNotice(
-        `Successfully promoted to formal CQI Action Plan (${promotedPlan.actionPlanTitle})! View under CQI Tracker.`
+        `Promoted finding to formal CQI Action Plan (${promotedPlan.actionPlanTitle}). You can track remediation under CQI Action Tracker.`
       );
       setTimeout(() => setPromotionNotice(null), 5000);
     }
   };
 
-  const getRiskBadge = (risk: string) => {
+  const renderRiskBadge = (risk: string) => {
     switch (risk) {
       case 'Critical Risk':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[var(--radius-control)] text-xs font-semibold bg-red-500/10 text-red-600 border border-red-200">
-            <ShieldAlert className="w-4 h-4" /> Critical Risk (Accreditation Failure Likely)
-          </span>
+          <Badge tone="danger" size="sm">
+            <ShieldAlert className="w-3 h-3 mr-1" />
+            Critical risk: Remediation mandatory
+          </Badge>
         );
       case 'Moderate Risk':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[var(--radius-control)] text-xs font-semibold bg-amber-500/10 text-amber-600 border border-amber-200">
-            <AlertTriangle className="w-4 h-4" /> Moderate Risk (Remediation Needed Before Visit)
-          </span>
+          <Badge tone="warning" size="sm">
+            <AlertTriangle className="w-3 h-3 mr-1" />
+            Moderate risk: Gaps require attention
+          </Badge>
         );
       case 'Low Risk':
       default:
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[var(--radius-control)] text-xs font-semibold bg-emerald-500/10 text-emerald-600 border border-emerald-200">
-            <CheckCircle2 className="w-4 h-4" /> Low Risk (High Probability of Success)
-          </span>
+          <Badge tone="success" size="sm">
+            <CheckCircle2 className="w-3 h-3 mr-1" />
+            Low risk: Audit-ready posture
+          </Badge>
         );
     }
   };
 
-  const getFindingTypeBadge = (type: MockFindingType) => {
+  const renderFindingTypeBadge = (type: MockFindingType) => {
     switch (type) {
       case 'Critical Gap':
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[var(--radius-control)] text-[11px] font-medium bg-red-500/10 text-red-600 border border-red-200">
-            <ShieldAlert className="w-3 h-3" /> Critical Gap
-          </span>
+          <Badge tone="danger" size="sm">
+            <ShieldAlert className="w-3 h-3 mr-1" />
+            Critical gap
+          </Badge>
         );
       case 'Minor Deficiency':
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[var(--radius-control)] text-[11px] font-medium bg-amber-500/10 text-amber-600 border border-amber-200">
-            <AlertTriangle className="w-3 h-3" /> Minor Deficiency
-          </span>
+          <Badge tone="warning" size="sm">
+            <AlertTriangle className="w-3 h-3 mr-1" />
+            Minor deficiency
+          </Badge>
         );
       case 'Commendable Strength':
       default:
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[var(--radius-control)] text-[11px] font-medium bg-emerald-500/10 text-emerald-600 border border-emerald-200">
-            <Award className="w-3 h-3" /> Commendable Strength
-          </span>
+          <Badge tone="success" size="sm">
+            <Award className="w-3 h-3 mr-1" />
+            Commendable strength
+          </Badge>
         );
     }
   };
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[var(--border)]">
         <div>
-          <h1 className="text-xl font-semibold text-[var(--foreground)] tracking-tight">
-            Mock Survey & Pre-Audit Simulation Workspace
+          <h1 className="font-[family-name:var(--font-display)] text-2xl font-medium text-[var(--foreground)] tracking-tight flex items-center gap-2.5">
+            <Sparkles className="w-6 h-6 text-[var(--accent)] stroke-[1.75]" />
+            Mock survey simulation workspace
           </h1>
-          <p className="text-xs text-[var(--text-secondary)] mt-1">
-            Sandboxed dry-run evaluations, internal mock audits, and one-click promotion of critical deficiencies directly into the CQI Action Plan tracker.
+          <p className="font-[family-name:var(--font-body)] text-xs text-[var(--text-muted)] mt-1">
+            Sandboxed dry-run evaluations, internal peer audits, and one-click promotion of critical deficiencies into the CQI tracker
           </p>
         </div>
-        <div className="flex items-center gap-2">
+
+        <div className="flex items-center gap-2 shrink-0">
           <Button
             onClick={() => {
               if (programs.length > 0 && !newProgramId) setNewProgramId(programs[0]!.id);
@@ -214,10 +218,11 @@ export function MockSurveyWorkspace() {
               setIsSessionModalOpen(true);
             }}
             variant="outline"
-            className="text-xs font-medium px-3 py-2 border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)] rounded-[var(--radius-control)]"
+            size="sm"
+            className="gap-1.5"
           >
-            <Plus className="w-4 h-4 mr-1.5" />
-            <span>New Mock Session</span>
+            <Plus className="w-4 h-4 stroke-[1.75]" />
+            <span>New mock session</span>
           </Button>
 
           <Button
@@ -227,10 +232,11 @@ export function MockSurveyWorkspace() {
               }
               setIsFindingModalOpen(true);
             }}
-            className="inline-flex items-center gap-2 bg-[var(--accent)] hover:bg-[var(--accent)]/90 text-white text-xs font-medium px-3.5 py-2 rounded-[var(--radius-control)] shadow-xs transition-colors"
+            size="sm"
+            className="gap-1.5"
           >
-            <Plus className="w-4 h-4 stroke-[2]" />
-            <span>Record Mock Finding</span>
+            <Plus className="w-4 h-4 stroke-[1.75]" />
+            <span>Record mock finding</span>
           </Button>
         </div>
       </div>
@@ -251,144 +257,127 @@ export function MockSurveyWorkspace() {
         </div>
       )}
 
-      {/* Session Selector Banner */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-[var(--surface)] p-3.5 rounded-[var(--radius-panel)] border border-[var(--border)] shadow-xs">
-        <div className="flex items-center gap-2.5">
-          <Layers className="w-4 h-4 text-[var(--text-muted)]" />
-          <span className="text-xs font-medium text-[var(--text-secondary)]">Active Simulation:</span>
-          <select
-            value={selectedSessionId}
-            onChange={(e) => setSelectedSessionId(e.target.value)}
-            className="text-xs font-semibold h-8 px-3 rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)] focus:outline-hidden"
-          >
-            {mockSessions.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.programCode} &bull; {s.title} ({s.scheduledDate})
-              </option>
-            ))}
-          </select>
+      {/* 4 Summary Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
+        <Card>
+          <CardHeader className="pb-2">
+            <span className="text-xs font-medium text-[var(--text-secondary)]">Simulation grand mean</span>
+            <CardTitle className="text-2xl font-medium text-[var(--accent)] tabular-nums">
+              {metrics.grandMeanScore !== null ? `${metrics.grandMeanScore.toFixed(2)} / 5.0` : 'Pending'}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <p className="text-xs text-[var(--text-muted)]">
+              {metrics.grandMeanScore && metrics.grandMeanScore >= 4.0
+                ? 'On track for Level III benchmark'
+                : 'Deficiencies need remediation'}
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className={metrics.criticalGapCount > 0 ? 'border-l-4 border-l-red-500' : ''}>
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <span className={`text-xs font-medium ${metrics.criticalGapCount > 0 ? 'text-red-600' : 'text-[var(--text-secondary)]'}`}>
+                Critical gaps
+              </span>
+              <ShieldAlert className="w-4 h-4 text-red-500 stroke-[1.75]" />
+            </div>
+            <CardTitle className={`text-2xl font-medium tabular-nums ${metrics.criticalGapCount > 0 ? 'text-red-600' : 'text-[var(--foreground)]'}`}>
+              {metrics.criticalGapCount}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <p className="text-xs text-[var(--text-muted)]">Fatal issues requiring rapid resolution</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-amber-700">Minor deficiencies</span>
+              <AlertTriangle className="w-4 h-4 text-amber-600 stroke-[1.75]" />
+            </div>
+            <CardTitle className="text-2xl font-medium text-amber-700 tabular-nums">
+              {metrics.minorDeficiencyCount}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <p className="text-xs text-[var(--text-muted)]">Non-fatal compliance recommendations</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-emerald-700">Commendable strengths</span>
+              <Award className="w-4 h-4 text-emerald-600 stroke-[1.75]" />
+            </div>
+            <CardTitle className="text-2xl font-medium text-emerald-700 tabular-nums">
+              {metrics.strengthCount}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <p className="text-xs text-[var(--text-muted)]">Verified exemplary benchmarks</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Main Table Card */}
+      <Card className="overflow-hidden">
+        {/* Toolbar Header */}
+        <div className="p-4 border-b border-[var(--border)] flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <Layers className="w-4 h-4 text-[var(--accent)] stroke-[1.75]" />
+            <h2 className="font-[family-name:var(--font-display)] text-sm font-medium text-[var(--foreground)]">
+              Simulation session findings
+            </h2>
+            <Badge tone="neutral" size="sm">
+              {activeSession?.findings.length || 0}
+            </Badge>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-medium text-[var(--text-secondary)]">Simulation:</span>
+              <select
+                value={selectedSessionId}
+                onChange={(e) => setSelectedSessionId(e.target.value)}
+                className="text-xs font-semibold h-8 px-2.5 rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)] focus:outline-hidden"
+              >
+                {mockSessions.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.programCode} &bull; {s.title} ({s.scheduledDate})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {activeSession && renderRiskBadge(metrics.riskLevel)}
+          </div>
         </div>
 
-        {activeSession && (
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-[var(--text-muted)] flex items-center gap-1">
-              <UserCheck className="w-3.5 h-3.5" />
-              Lead: {activeSession.auditTeamLead}
-            </span>
-            <div>{getRiskBadge(metrics.riskLevel)}</div>
-          </div>
-        )}
-      </div>
-
-      {/* Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-        <Card className="border-[var(--border)] bg-[var(--surface)] shadow-xs">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider">
-                Simulation Mean Score
-              </span>
-              <TrendingUp className="w-4 h-4 text-[var(--accent)]" />
-            </div>
-            <div className="text-2xl font-semibold text-[var(--foreground)] mt-2">
-              {metrics.grandMeanScore !== null ? `${metrics.grandMeanScore.toFixed(2)} / 5.0` : 'Pending'}
-            </div>
-            <span className="text-xs text-[var(--text-secondary)] mt-1 block">
-              {metrics.grandMeanScore && metrics.grandMeanScore >= 4.0
-                ? 'Targeting Level III benchmark'
-                : 'Remediation required for passing'}
-            </span>
-          </CardContent>
-        </Card>
-
-        <Card className="border-[var(--border)] bg-[var(--surface)] shadow-xs">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider">
-                Critical Gaps
-              </span>
-              <ShieldAlert className="w-4 h-4 text-red-500" />
-            </div>
-            <div className="text-2xl font-semibold text-red-600 mt-2">
-              {metrics.criticalGapCount}
-            </div>
-            <span className="text-xs text-red-500/80 mt-1 block">
-              Must resolve prior to official visit
-            </span>
-          </CardContent>
-        </Card>
-
-        <Card className="border-[var(--border)] bg-[var(--surface)] shadow-xs">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider">
-                Minor Deficiencies
-              </span>
-              <AlertTriangle className="w-4 h-4 text-amber-500" />
-            </div>
-            <div className="text-2xl font-semibold text-amber-600 mt-2">
-              {metrics.minorDeficiencyCount}
-            </div>
-            <span className="text-xs text-amber-600/80 mt-1 block">
-              Recommend rapid action plans
-            </span>
-          </CardContent>
-        </Card>
-
-        <Card className="border-[var(--border)] bg-[var(--surface)] shadow-xs">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider">
-                Commendable Strengths
-              </span>
-              <Award className="w-4 h-4 text-emerald-600" />
-            </div>
-            <div className="text-2xl font-semibold text-emerald-600 mt-2">
-              {metrics.strengthCount}
-            </div>
-            <span className="text-xs text-[var(--text-secondary)] mt-1 block">
-              Exemplary institutional benchmarks
-            </span>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Findings Table */}
-      <Card className="border-[var(--border)] bg-[var(--surface)] shadow-xs overflow-hidden">
-        <CardHeader className="p-4 border-b border-[var(--border)] bg-[var(--surface-muted)]/50 flex flex-row items-center justify-between">
-          <div>
-            <CardTitle className="text-xs font-semibold text-[var(--foreground)] uppercase tracking-wider">
-              Internal Mock Audit Observations & Findings
-            </CardTitle>
-            <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">
-              Review findings logged by internal peer auditors during simulated inspection.
-            </p>
-          </div>
-          <span className="text-xs text-[var(--text-muted)]">
-            {activeSession?.findings.length || 0} findings recorded
-          </span>
-        </CardHeader>
-
+        {/* Table Content */}
         <div className="overflow-x-auto">
           <Table>
             <TableHeader className="bg-[var(--surface-muted)]">
               <TableRow className="border-b border-[var(--border)]">
-                <TableHead className="text-xs font-semibold text-[var(--text-muted)] w-24">
+                <TableHead className="font-[family-name:var(--font-display)] text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider w-24">
                   Area & Code
                 </TableHead>
-                <TableHead className="text-xs font-semibold text-[var(--text-muted)] w-28">
+                <TableHead className="font-[family-name:var(--font-display)] text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider w-32">
                   Finding Type
                 </TableHead>
-                <TableHead className="text-xs font-semibold text-[var(--text-muted)] w-20">
+                <TableHead className="font-[family-name:var(--font-display)] text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider w-20">
                   Rating
                 </TableHead>
-                <TableHead className="text-xs font-semibold text-[var(--text-muted)] min-w-[280px]">
+                <TableHead className="font-[family-name:var(--font-display)] text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider min-w-[280px]">
                   Observation & Required Urgent Action
                 </TableHead>
-                <TableHead className="text-xs font-semibold text-[var(--text-muted)] w-36">
+                <TableHead className="font-[family-name:var(--font-display)] text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider w-36">
                   Auditor
                 </TableHead>
-                <TableHead className="text-xs font-semibold text-[var(--text-muted)] w-40 text-right">
+                <TableHead className="font-[family-name:var(--font-display)] text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider w-36 text-right">
                   Closed-Loop Action
                 </TableHead>
               </TableRow>
@@ -396,15 +385,15 @@ export function MockSurveyWorkspace() {
             <TableBody>
               {!activeSession || activeSession.findings.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-10 text-xs text-[var(--text-muted)]">
-                    No findings recorded for this simulation session yet. Click &quot;Record Mock Finding&quot; to begin.
+                  <TableCell colSpan={6} className="text-center py-10 font-[family-name:var(--font-body)] text-xs text-[var(--text-muted)]">
+                    No findings recorded for this simulation session yet. Click &quot;Record mock finding&quot; to begin.
                   </TableCell>
                 </TableRow>
               ) : (
                 activeSession.findings.map((f) => (
                   <TableRow
                     key={f.id}
-                    className="border-b border-[var(--border-subtle)] hover:bg-[var(--surface-muted)]/40 transition-colors"
+                    className="border-b border-[var(--border)] hover:bg-[var(--surface-muted)]/50 transition-colors"
                   >
                     <TableCell className="align-top py-3.5">
                       <span className="font-semibold text-xs text-[var(--foreground)] block">
@@ -414,7 +403,7 @@ export function MockSurveyWorkspace() {
                     </TableCell>
 
                     <TableCell className="align-top py-3.5">
-                      {getFindingTypeBadge(f.findingType)}
+                      {renderFindingTypeBadge(f.findingType)}
                     </TableCell>
 
                     <TableCell className="align-top py-3.5">
@@ -428,7 +417,7 @@ export function MockSurveyWorkspace() {
                         {f.observation}
                       </p>
                       <p className="text-[11px] text-[var(--text-secondary)]">
-                        <strong className="text-[var(--text-muted)]">Urgent Action:</strong>{' '}
+                        <strong className="text-[var(--text-muted)] font-normal">Urgent action:</strong>{' '}
                         {f.urgentActionNeeded}
                       </p>
                     </TableCell>
@@ -439,16 +428,18 @@ export function MockSurveyWorkspace() {
 
                     <TableCell className="align-top py-3.5 text-right">
                       {f.promotedToCQIId || f.isResolved ? (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-[var(--radius-control)]">
-                          <CheckCircle2 className="w-3 h-3" /> Promoted to CQI
-                        </span>
+                        <Badge tone="success" size="sm">
+                          <CheckCircle2 className="w-3 h-3 mr-1" />
+                          Promoted to CQI
+                        </Badge>
                       ) : f.findingType === 'Commendable Strength' ? (
-                        <span className="text-[11px] text-[var(--text-muted)]">Verified</span>
+                        <span className="text-[11px] text-[var(--text-muted)]">Benchmark</span>
                       ) : (
                         <Button
                           onClick={() => handlePromote(f.id)}
                           size="sm"
-                          className="text-[11px] h-7 px-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium inline-flex items-center gap-1 rounded-[var(--radius-control)]"
+                          variant="outline"
+                          className="text-[11px] h-7 px-2.5 gap-1"
                         >
                           <span>Promote to CQI</span>
                           <ArrowRight className="w-3 h-3" />
@@ -465,14 +456,12 @@ export function MockSurveyWorkspace() {
 
       {/* Record Finding Dialog */}
       <Dialog open={isFindingModalOpen} onOpenChange={setIsFindingModalOpen}>
-        <DialogContent title="Record Internal Mock Audit Finding" className="max-w-lg bg-[var(--surface)] border-[var(--border)] p-6">
-          <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]">
-            <h2 className="text-sm font-semibold text-[var(--foreground)]">
-              Record Internal Mock Audit Finding
-            </h2>
-          </div>
-
-          <form onSubmit={handleAddFinding} className="space-y-4 pt-3">
+        <DialogContent
+          title="Record Internal Mock Audit Finding"
+          description="Log an observation, score, and urgent remedial intervention identified during mock inspection."
+          className="max-w-lg"
+        >
+          <form onSubmit={handleAddFinding} className="space-y-4 pt-2">
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
@@ -500,7 +489,7 @@ export function MockSurveyWorkspace() {
                   value={newParameterCode}
                   onChange={(e) => setNewParameterCode(e.target.value)}
                   placeholder="e.g. Parameter A"
-                  className="text-xs h-9 bg-[var(--surface)] border-[var(--border)]"
+                  className="text-xs h-9"
                   required
                 />
               </div>
@@ -533,7 +522,7 @@ export function MockSurveyWorkspace() {
                   max="5.0"
                   value={newMockScore}
                   onChange={(e) => setNewMockScore(Number(e.target.value))}
-                  className="text-xs h-9 bg-[var(--surface)] border-[var(--border)]"
+                  className="text-xs h-9"
                   required
                 />
               </div>
@@ -576,7 +565,7 @@ export function MockSurveyWorkspace() {
                 value={newAuditorName}
                 onChange={(e) => setNewAuditorName(e.target.value)}
                 placeholder="e.g. Dr. Evelyn Cruz"
-                className="text-xs h-9 bg-[var(--surface)] border-[var(--border)]"
+                className="text-xs h-9"
                 required
               />
             </div>
@@ -585,16 +574,17 @@ export function MockSurveyWorkspace() {
               <Button
                 type="button"
                 variant="outline"
+                size="sm"
                 onClick={() => setIsFindingModalOpen(false)}
-                className="text-xs h-9 px-3 border-[var(--border)]"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                className="text-xs h-9 px-4 bg-[var(--accent)] hover:bg-[var(--accent)]/90 text-white font-medium"
+                size="sm"
+                className="gap-1.5"
               >
-                Log Finding
+                Log finding
               </Button>
             </div>
           </form>
@@ -603,14 +593,12 @@ export function MockSurveyWorkspace() {
 
       {/* Schedule Mock Session Dialog */}
       <Dialog open={isSessionModalOpen} onOpenChange={setIsSessionModalOpen}>
-        <DialogContent title="Schedule Mock Survey Simulation" className="max-w-md bg-[var(--surface)] border-[var(--border)] p-6">
-          <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]">
-            <h2 className="text-sm font-semibold text-[var(--foreground)]">
-              Schedule Mock Survey Simulation
-            </h2>
-          </div>
-
-          <form onSubmit={handleCreateSession} className="space-y-4 pt-3">
+        <DialogContent
+          title="Schedule Mock Survey Simulation"
+          description="Initialize a new pre-audit simulation session to stress-test program readiness."
+          className="max-w-md"
+        >
+          <form onSubmit={handleCreateSession} className="space-y-4 pt-2">
             <div>
               <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
                 Session Title
@@ -620,7 +608,7 @@ export function MockSurveyWorkspace() {
                 value={newSessionTitle}
                 onChange={(e) => setNewSessionTitle(e.target.value)}
                 placeholder="e.g. Pre-AACCUP BSIT Internal Mock Survey 2026"
-                className="text-xs h-9 bg-[var(--surface)] border-[var(--border)]"
+                className="text-xs h-9"
                 required
               />
             </div>
@@ -672,7 +660,7 @@ export function MockSurveyWorkspace() {
                 value={newAuditLead}
                 onChange={(e) => setNewAuditLead(e.target.value)}
                 placeholder="e.g. Dr. Evelyn Cruz"
-                className="text-xs h-9 bg-[var(--surface)] border-[var(--border)]"
+                className="text-xs h-9"
                 required
               />
             </div>
@@ -685,7 +673,7 @@ export function MockSurveyWorkspace() {
                 type="date"
                 value={newScheduledDate}
                 onChange={(e) => setNewScheduledDate(e.target.value)}
-                className="text-xs h-9 bg-[var(--surface)] border-[var(--border)]"
+                className="text-xs h-9"
                 required
               />
             </div>
@@ -694,16 +682,17 @@ export function MockSurveyWorkspace() {
               <Button
                 type="button"
                 variant="outline"
+                size="sm"
                 onClick={() => setIsSessionModalOpen(false)}
-                className="text-xs h-9 px-3 border-[var(--border)]"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                className="text-xs h-9 px-4 bg-[var(--accent)] hover:bg-[var(--accent)]/90 text-white font-medium"
+                size="sm"
+                className="gap-1.5"
               >
-                Schedule Session
+                Schedule session
               </Button>
             </div>
           </form>
