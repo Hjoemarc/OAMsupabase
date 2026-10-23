@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import {
   Table,
   TableBody,
@@ -372,12 +372,12 @@ export function CrossWalkMatrix() {
         </div>
       </Card>
 
-      {/* Map Evidence Dialog */}
-      <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-        <DialogContent
+      {/* Map Evidence Drawer */}
+      <Drawer open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+        <DrawerContent
           title="Map Evidence to External Standard"
           description="Establish an authenticated equivalence link between an uploaded evidence artifact and external agency benchmarks."
-          className="max-w-lg"
+          size="xl"
         >
           <form onSubmit={handleCreateSubmit} className="space-y-4 pt-2">
             <div>
@@ -523,8 +523,8 @@ export function CrossWalkMatrix() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }

@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import SegmentedControl from '@/components/arc/segmented-control/segmented-control';
 import {
   Table,
@@ -471,12 +471,12 @@ export function CriteriaFramework() {
         }}
       />
 
-      {/* Add Parameter Dialog */}
-      <Dialog open={isAddParamOpen} onOpenChange={setIsAddParamOpen}>
-        <DialogContent
+      {/* Add Parameter Drawer */}
+      <Drawer open={isAddParamOpen} onOpenChange={setIsAddParamOpen}>
+        <DrawerContent
           title="Add Criterion Parameter"
           description="Create a benchmark parameter under an accredited standard area"
-          className="max-w-md"
+          size="lg"
         >
           <form onSubmit={handleCreateParam} className="space-y-4 pt-2">
             <div>
@@ -543,15 +543,15 @@ export function CriteriaFramework() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
-      {/* Edit Parameter Dialog */}
-      <Dialog open={Boolean(editingParam)} onOpenChange={(open) => !open && setEditingParam(null)}>
-        <DialogContent
+      {/* Edit Parameter Drawer */}
+      <Drawer open={Boolean(editingParam)} onOpenChange={(open) => !open && setEditingParam(null)}>
+        <DrawerContent
           title="Edit Criterion Parameter"
           description="Update parameter code, scope, and parent area association"
-          className="max-w-md"
+          size="lg"
         >
           <form onSubmit={handleUpdateParam} className="space-y-4 pt-2">
             <div>
@@ -615,15 +615,15 @@ export function CriteriaFramework() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
-      {/* Add Indicator Dialog */}
-      <Dialog open={isAddIndicatorOpen} onOpenChange={setIsAddIndicatorOpen}>
-        <DialogContent
+      {/* Add Indicator Drawer */}
+      <Drawer open={isAddIndicatorOpen} onOpenChange={setIsAddIndicatorOpen}>
+        <DrawerContent
           title="Add verification indicator"
           description="Register a verifiable documentary requirement under a specific criteria parameter"
-          className="max-w-md"
+          size="lg"
         >
           <form onSubmit={handleCreateIndicator} className="space-y-4 pt-2">
             <div>
@@ -696,15 +696,15 @@ export function CriteriaFramework() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
-      {/* Edit Indicator Dialog */}
-      <Dialog open={Boolean(editingInd)} onOpenChange={(open) => !open && setEditingInd(null)}>
-        <DialogContent
+      {/* Edit Indicator Drawer */}
+      <Drawer open={Boolean(editingInd)} onOpenChange={(open) => !open && setEditingInd(null)}>
+        <DrawerContent
           title="Edit verification indicator"
           description="Update indicator specifications and parent benchmark assignment"
-          className="max-w-md"
+          size="lg"
         >
           <form onSubmit={handleUpdateInd} className="space-y-4 pt-2">
             <div>
@@ -775,8 +775,8 @@ export function CriteriaFramework() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }

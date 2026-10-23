@@ -170,76 +170,76 @@ export function PortalSidebar({ userEmail, userName, roles }: PortalSidebarProps
               <>
                 <div className="space-y-1">
                   <span className="px-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider block">
-                    Programs & Standards
+                    Programs & Rules
                   </span>
                   <nav className="space-y-0.5 pt-0.5">
                     <Link href="/admin/programs" className={linkClass('/admin/programs')}>
                       <GraduationCap className={iconClass('/admin/programs')} />
-                      <span>Program catalog</span>
+                      <span>Programs & Courses</span>
                     </Link>
                     <Link href="/admin/framework" className={linkClass('/admin/framework')}>
                       <ClipboardList className={iconClass('/admin/framework')} />
-                      <span>Criteria framework</span>
+                      <span>Accreditation Standards</span>
                     </Link>
                     <Link href="/admin/crosswalk" className={linkClass('/admin/crosswalk')}>
                       <GitCompare className={iconClass('/admin/crosswalk')} />
-                      <span>Multi-agency crosswalk</span>
+                      <span>Standard Mappings</span>
                     </Link>
                   </nav>
                 </div>
 
                 <div className="space-y-1">
                   <span className="px-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider block">
-                    Survey Operations
+                    Survey Visits
                   </span>
                   <nav className="space-y-0.5 pt-0.5">
                     <Link href="/admin/cycles" className={linkClass('/admin/cycles')}>
                       <CalendarDays className={iconClass('/admin/cycles')} />
-                      <span>Accreditation cycles</span>
+                      <span>Survey Periods</span>
                     </Link>
                     <Link href="/admin/timeline" className={linkClass('/admin/timeline')}>
                       <CalendarCheck className={iconClass('/admin/timeline')} />
-                      <span>Survey timeline</span>
+                      <span>Calendar & Deadlines</span>
                     </Link>
                     <Link href="/admin/mock-survey" className={linkClass('/admin/mock-survey')}>
                       <Sparkles className={iconClass('/admin/mock-survey')} />
-                      <span>Mock survey simulation</span>
+                      <span>Practice Survey</span>
                     </Link>
                     <Link href="/admin/reviews" className={linkClass('/admin/reviews')}>
                       <ShieldCheck className={iconClass('/admin/reviews')} />
-                      <span>Review management</span>
+                      <span>Survey Reviews</span>
                     </Link>
                   </nav>
                 </div>
 
                 <div className="space-y-1">
                   <span className="px-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider block">
-                    Quality & Dossier
+                    Reports & Files
                   </span>
                   <nav className="space-y-0.5 pt-0.5">
                     <Link href="/admin/compliance" className={linkClass('/admin/compliance')}>
                       <LineChart className={iconClass('/admin/compliance')} />
-                      <span>Compliance tracking</span>
+                      <span>Compliance Progress</span>
                     </Link>
                     <Link href="/admin/dossier" className={linkClass('/admin/dossier')}>
                       <FolderArchive className={iconClass('/admin/dossier')} />
-                      <span>SSR exhibit dossier</span>
+                      <span>Report Binder</span>
                     </Link>
                     <Link href="/admin/cqi" className={linkClass('/admin/cqi')}>
                       <TrendingUp className={iconClass('/admin/cqi')} />
-                      <span>CQI action tracker</span>
+                      <span>Action Plans</span>
                     </Link>
                   </nav>
                 </div>
 
                 <div className="space-y-1">
                   <span className="px-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider block">
-                    Administration
+                    User Access
                   </span>
                   <nav className="space-y-0.5 pt-0.5">
                     <Link href="/admin/users" className={linkClass('/admin/users')}>
                       <Users className={iconClass('/admin/users')} />
-                      <span>User directory & roles</span>
+                      <span>Users & Roles</span>
                     </Link>
                   </nav>
                 </div>
@@ -251,44 +251,44 @@ export function PortalSidebar({ userEmail, userName, roles }: PortalSidebarProps
               <>
                 <div className="space-y-1">
                   <span className="px-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider block">
-                    Survey Operations
+                    Survey Visits
                   </span>
                   <nav className="space-y-0.5 pt-0.5">
                     <Link href="/coordinator/reviews" className={linkClass('/coordinator/reviews')}>
                       <ShieldCheck className={iconClass('/coordinator/reviews')} />
-                      <span>Review management</span>
+                      <span>Survey Reviews</span>
                     </Link>
                     <Link href="/coordinator/timeline" className={linkClass('/coordinator/timeline')}>
                       <CalendarCheck className={iconClass('/coordinator/timeline')} />
-                      <span>Survey timeline</span>
+                      <span>Calendar & Deadlines</span>
                     </Link>
                     <Link href="/coordinator/mock-survey" className={linkClass('/coordinator/mock-survey')}>
                       <Sparkles className={iconClass('/coordinator/mock-survey')} />
-                      <span>Mock survey simulation</span>
+                      <span>Practice Survey</span>
                     </Link>
                   </nav>
                 </div>
 
                 <div className="space-y-1">
                   <span className="px-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider block">
-                    Quality & Dossier
+                    Reports & Files
                   </span>
                   <nav className="space-y-0.5 pt-0.5">
                     <Link href="/coordinator/compliance" className={linkClass('/coordinator/compliance')}>
                       <LineChart className={iconClass('/coordinator/compliance')} />
-                      <span>Compliance tracking</span>
+                      <span>Compliance Progress</span>
                     </Link>
                     <Link href="/coordinator/dossier" className={linkClass('/coordinator/dossier')}>
                       <FolderArchive className={iconClass('/coordinator/dossier')} />
-                      <span>SSR exhibit dossier</span>
+                      <span>Report Binder</span>
                     </Link>
                     <Link href="/coordinator/crosswalk" className={linkClass('/coordinator/crosswalk')}>
                       <GitCompare className={iconClass('/coordinator/crosswalk')} />
-                      <span>Multi-agency crosswalk</span>
+                      <span>Standard Mappings</span>
                     </Link>
                     <Link href="/coordinator/cqi" className={linkClass('/coordinator/cqi')}>
                       <TrendingUp className={iconClass('/coordinator/cqi')} />
-                      <span>CQI action tracker</span>
+                      <span>Action Plans</span>
                     </Link>
                   </nav>
                 </div>
@@ -299,16 +299,16 @@ export function PortalSidebar({ userEmail, userName, roles }: PortalSidebarProps
             {currentRole === 'evaluator' && (
               <div className="space-y-1">
                 <span className="px-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider block">
-                  Accreditation Audits
+                  Evaluations
                 </span>
                 <nav className="space-y-0.5 pt-0.5">
                   <Link href="/evaluator/reviews" className={linkClass('/evaluator/reviews')}>
                     <Award className={iconClass('/evaluator/reviews')} />
-                    <span>Review workbench</span>
+                    <span>Score & Review</span>
                   </Link>
                   <Link href="/evaluator/mock-survey" className={linkClass('/evaluator/mock-survey')}>
                     <Sparkles className={iconClass('/evaluator/mock-survey')} />
-                    <span>Mock survey simulation</span>
+                    <span>Practice Survey</span>
                   </Link>
                 </nav>
               </div>
@@ -318,16 +318,16 @@ export function PortalSidebar({ userEmail, userName, roles }: PortalSidebarProps
             {currentRole === 'faculty' && (
               <div className="space-y-1">
                 <span className="px-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider block">
-                  Evidence Submissions
+                  My Submissions
                 </span>
                 <nav className="space-y-0.5 pt-0.5">
                   <Link href="/faculty/assignments" className={linkClass('/faculty/assignments')}>
                     <ClipboardList className={iconClass('/faculty/assignments')} />
-                    <span>My assignments</span>
+                    <span>My Tasks</span>
                   </Link>
                   <Link href="/faculty/documents" className={linkClass('/faculty/documents')}>
                     <FileText className={iconClass('/faculty/documents')} />
-                    <span>Document vault</span>
+                    <span>Uploaded Files</span>
                   </Link>
                 </nav>
               </div>

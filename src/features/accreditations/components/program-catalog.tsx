@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import SegmentedControl from '@/components/arc/segmented-control/segmented-control';
 import {
   Table,
@@ -673,12 +673,12 @@ export function ProgramCatalog() {
         }}
       />
 
-      {/* Add College Dialog */}
-      <Dialog open={isAddDeptOpen} onOpenChange={setIsAddDeptOpen}>
-        <DialogContent
+      {/* Add College Drawer */}
+      <Drawer open={isAddDeptOpen} onOpenChange={setIsAddDeptOpen}>
+        <DrawerContent
           title="Add academic college"
           description="Register a new academic department or college within the institution"
-          className="max-w-md"
+          size="lg"
         >
           <form onSubmit={handleCreateDept} className="space-y-4 pt-2">
             <div>
@@ -724,15 +724,15 @@ export function ProgramCatalog() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
-      {/* Edit College Dialog */}
-      <Dialog open={Boolean(editingDept)} onOpenChange={(open) => !open && setEditingDept(null)}>
-        <DialogContent
+      {/* Edit College Drawer */}
+      <Drawer open={Boolean(editingDept)} onOpenChange={(open) => !open && setEditingDept(null)}>
+        <DrawerContent
           title="Edit academic college"
           description="Update details and leadership for this constituent college"
-          className="max-w-md"
+          size="lg"
         >
           <form onSubmit={handleUpdateDept} className="space-y-4 pt-2">
             <div>
@@ -775,15 +775,15 @@ export function ProgramCatalog() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
-      {/* Add Program Dialog */}
-      <Dialog open={isAddProgOpen} onOpenChange={setIsAddProgOpen}>
-        <DialogContent
+      {/* Add Program Drawer */}
+      <Drawer open={isAddProgOpen} onOpenChange={setIsAddProgOpen}>
+        <DrawerContent
           title="Add degree program"
           description="Enroll a new curriculum into institutional accreditation tracking"
-          className="max-w-md"
+          size="lg"
         >
           <form onSubmit={handleCreateProgram} className="space-y-4 pt-2">
             <div className="grid grid-cols-2 gap-3">
@@ -884,15 +884,15 @@ export function ProgramCatalog() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
-      {/* Edit Program Dialog */}
-      <Dialog open={Boolean(editingProg)} onOpenChange={(open) => !open && setEditingProg(null)}>
-        <DialogContent
+      {/* Edit Program Drawer */}
+      <Drawer open={Boolean(editingProg)} onOpenChange={(open) => !open && setEditingProg(null)}>
+        <DrawerContent
           title="Edit degree program"
           description="Update accreditation tier, lead coordinator, and program information"
-          className="max-w-md"
+          size="lg"
         >
           <form onSubmit={handleUpdateProgram} className="space-y-4 pt-2">
             <div className="grid grid-cols-2 gap-3">
@@ -990,15 +990,15 @@ export function ProgramCatalog() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
-      {/* Add Course Dialog (Cascading Dependent Selection) */}
-      <Dialog open={isAddCourseOpen} onOpenChange={setIsAddCourseOpen}>
-        <DialogContent
+      {/* Add Course Drawer (Cascading Dependent Selection) */}
+      <Drawer open={isAddCourseOpen} onOpenChange={setIsAddCourseOpen}>
+        <DrawerContent
           title="Add academic course"
           description="Register a subject course under a specific college and degree program"
-          className="max-w-md"
+          size="lg"
         >
           <form onSubmit={handleCreateCourse} className="space-y-4 pt-2">
             <DependentSelect
@@ -1105,15 +1105,15 @@ export function ProgramCatalog() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
-      {/* Edit Course Dialog */}
-      <Dialog open={Boolean(editingCourse)} onOpenChange={(open) => !open && setEditingCourse(null)}>
-        <DialogContent
+      {/* Edit Course Drawer */}
+      <Drawer open={Boolean(editingCourse)} onOpenChange={(open) => !open && setEditingCourse(null)}>
+        <DrawerContent
           title="Edit academic course"
           description="Update course specifications, program link, and credit units"
-          className="max-w-md"
+          size="lg"
         >
           <form onSubmit={handleUpdateCourse} className="space-y-4 pt-2">
             <DependentSelect
@@ -1218,8 +1218,8 @@ export function ProgramCatalog() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }

@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import {
   Table,
   TableBody,
@@ -232,13 +232,13 @@ export function RubricEvaluator() {
         </div>
       </Card>
 
-      {/* Evaluator Rubric Dialog */}
-      <Dialog open={!!evaluatingParam} onOpenChange={(open) => !open && setEvaluatingParam(null)}>
+      {/* Evaluator Rubric Drawer */}
+      <Drawer open={!!evaluatingParam} onOpenChange={(open) => !open && setEvaluatingParam(null)}>
         {evaluatingParam && (
-          <DialogContent
+          <DrawerContent
             title={`Audit rubric: ${evaluatingParam.code}`}
             description={evaluatingParam.title}
-            className="max-w-lg"
+            size="xl"
           >
             <form onSubmit={handleSaveEvaluation} className="space-y-4 pt-2">
               <div>
@@ -328,9 +328,9 @@ export function RubricEvaluator() {
                 </Button>
               </div>
             </form>
-          </DialogContent>
+          </DrawerContent>
         )}
-      </Dialog>
+      </Drawer>
     </div>
   );
 }

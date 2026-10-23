@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import {
   Table,
   TableBody,
@@ -265,13 +265,13 @@ export function ComplianceTracker() {
         </div>
       </Card>
 
-      {/* Edit Compliance Dialog */}
-      <Dialog open={!!editingItem} onOpenChange={(open) => !open && setEditingItem(null)}>
+      {/* Edit Compliance Drawer */}
+      <Drawer open={!!editingItem} onOpenChange={(open) => !open && setEditingItem(null)}>
         {editingItem && (
-          <DialogContent
+          <DrawerContent
             title={`Update compliance: ${editingItem.indicatorCode}`}
             description="Record verified compliance status and auditor remediation remarks"
-            className="max-w-md"
+            size="lg"
           >
             <form onSubmit={handleSaveStatus} className="space-y-4 pt-2">
               <div>
@@ -319,9 +319,9 @@ export function ComplianceTracker() {
                 </Button>
               </div>
             </form>
-          </DialogContent>
+          </DrawerContent>
         )}
-      </Dialog>
+      </Drawer>
     </div>
   );
 }

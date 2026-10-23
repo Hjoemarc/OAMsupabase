@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import {
   Table,
   TableBody,
@@ -427,12 +427,12 @@ export function CQITracker() {
         </div>
       </Card>
 
-      {/* Create New CQI Action Plan Dialog */}
-      <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-        <DialogContent
+      {/* Create New CQI Action Plan Drawer */}
+      <Drawer open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+        <DrawerContent
           title="Create New CQI Action Plan"
           description="Register a new post-accreditation institutional action plan to address specific evaluator recommendations or benchmark deficiencies."
-          className="max-w-xl"
+          size="xl"
         >
           <form onSubmit={handleCreateSubmit} className="space-y-4 pt-2">
             <div className="grid grid-cols-2 gap-3">
@@ -584,8 +584,8 @@ export function CQITracker() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }

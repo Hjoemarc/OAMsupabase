@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import {
   Table,
   TableBody,
@@ -246,12 +246,12 @@ export function AccreditationTimeline() {
         </div>
       </Card>
 
-      {/* Add Survey Dialog */}
-      <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-        <DialogContent
+      {/* Add Survey Drawer */}
+      <Drawer open={isAddOpen} onOpenChange={setIsAddOpen}>
+        <DrawerContent
           title="Add accreditation survey record"
           description="Register an accreditation validity period and schedule upcoming visits"
-          className="max-w-md"
+          size="lg"
         >
           <form onSubmit={handleCreateRecord} className="space-y-4 pt-2">
             <div>
@@ -359,8 +359,8 @@ export function AccreditationTimeline() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }

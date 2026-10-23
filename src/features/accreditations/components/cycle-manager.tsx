@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import {
   Table,
   TableBody,
@@ -324,12 +324,12 @@ export function CycleManager() {
         </div>
       </Card>
 
-      {/* Add Cycle Dialog */}
-      <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-        <DialogContent
+      {/* Add Cycle Drawer */}
+      <Drawer open={isAddOpen} onOpenChange={setIsAddOpen}>
+        <DrawerContent
           title="Add accreditation cycle"
           description="Create a new institutional survey window for AACCUP or CHED review"
-          className="max-w-lg"
+          size="lg"
         >
           <form onSubmit={handleCreate} className="space-y-4 pt-2">
             <div>
@@ -460,15 +460,15 @@ export function CycleManager() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
-      {/* Edit Cycle Dialog */}
-      <Dialog open={Boolean(editingCycle)} onOpenChange={(open) => !open && setEditingCycle(null)}>
-        <DialogContent
+      {/* Edit Cycle Drawer */}
+      <Drawer open={Boolean(editingCycle)} onOpenChange={(open) => !open && setEditingCycle(null)}>
+        <DrawerContent
           title="Edit accreditation cycle"
           description="Update schedule, target level, and participating programs"
-          className="max-w-lg"
+          size="lg"
         >
           <form onSubmit={handleUpdate} className="space-y-4 pt-2">
             <div>
@@ -596,8 +596,8 @@ export function CycleManager() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
       {/* Delete Cycle Confirmation Dialog */}
       <ConfirmDialog

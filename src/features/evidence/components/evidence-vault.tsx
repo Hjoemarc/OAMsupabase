@@ -11,7 +11,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import {
   Table,
   TableBody,
@@ -366,12 +366,12 @@ export function EvidenceVault() {
         </div>
       </Card>
 
-      {/* Upload Dialog with Dependent Cascading Selection */}
-      <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
-        <DialogContent
+      {/* Upload Drawer with Dependent Cascading Selection */}
+      <Drawer open={isUploadOpen} onOpenChange={setIsUploadOpen}>
+        <DrawerContent
           title="Upload verification document"
           description="Attach documentary evidence to satisfy specific accreditation benchmark requirements"
-          className="max-w-lg"
+          size="lg"
         >
           <form onSubmit={handleUpload} className="space-y-4 pt-2">
             {/* Cascading Area -> Parameter */}
@@ -496,15 +496,15 @@ export function EvidenceVault() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
-      {/* Edit Metadata Dialog */}
-      <Dialog open={Boolean(editingDoc)} onOpenChange={(open) => !open && setEditingDoc(null)}>
-        <DialogContent
+      {/* Edit Metadata Drawer */}
+      <Drawer open={Boolean(editingDoc)} onOpenChange={(open) => !open && setEditingDoc(null)}>
+        <DrawerContent
           title="Edit evidence metadata"
           description="Update artifact name, filing title, and document classification"
-          className="max-w-md"
+          size="lg"
         >
           <form onSubmit={handleUpdate} className="space-y-4 pt-2">
             <div>
@@ -556,8 +556,8 @@ export function EvidenceVault() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
       {/* Delete Confirmation Safeguard Dialog */}
       <ConfirmDialog

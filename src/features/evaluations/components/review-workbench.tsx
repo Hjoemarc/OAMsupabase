@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import SegmentedControl from '@/components/arc/segmented-control/segmented-control';
 import {
   Table,
@@ -322,13 +322,13 @@ export function ReviewWorkbench() {
         )}
       </Card>
 
-      {/* Review Document Dialog */}
-      <Dialog open={!!reviewingDoc} onOpenChange={(open) => !open && setReviewingDoc(null)}>
+      {/* Review Document Drawer */}
+      <Drawer open={!!reviewingDoc} onOpenChange={(open) => !open && setReviewingDoc(null)}>
         {reviewingDoc && (
-          <DialogContent
+          <DrawerContent
             title={`Review artifact: ${reviewingDoc.fileName}`}
             description="Examine evidence suitability and record audit decisions"
-            className="max-w-md"
+            size="lg"
           >
             <form onSubmit={handleSaveReview} className="space-y-4 pt-2">
               <div>
@@ -379,17 +379,17 @@ export function ReviewWorkbench() {
                 </Button>
               </div>
             </form>
-          </DialogContent>
+          </DrawerContent>
         )}
-      </Dialog>
+      </Drawer>
 
-      {/* Assign Reviewer Dialog */}
-      <Dialog open={!!assigningItem} onOpenChange={(open) => !open && setAssigningItem(null)}>
+      {/* Assign Reviewer Drawer */}
+      <Drawer open={!!assigningItem} onOpenChange={(open) => !open && setAssigningItem(null)}>
         {assigningItem && (
-          <DialogContent
+          <DrawerContent
             title={`Assign QA reviewer: ${assigningItem.facultyName}`}
             description="Delegate responsibility for inspecting this faculty member's evidence submission"
-            className="max-w-md"
+            size="lg"
           >
             <form onSubmit={handleSaveAssignment} className="space-y-4 pt-2">
               <div>
@@ -418,9 +418,9 @@ export function ReviewWorkbench() {
                 </Button>
               </div>
             </form>
-          </DialogContent>
+          </DrawerContent>
         )}
-      </Dialog>
+      </Drawer>
     </div>
   );
 }

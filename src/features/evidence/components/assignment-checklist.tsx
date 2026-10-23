@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import {
   Table,
   TableBody,
@@ -216,13 +216,13 @@ export function AssignmentChecklist() {
         </div>
       </Card>
 
-      {/* Self Survey Dialog */}
-      <Dialog open={!!ratingParam} onOpenChange={(open) => !open && setRatingParam(null)}>
+      {/* Self Survey Drawer */}
+      <Drawer open={!!ratingParam} onOpenChange={(open) => !open && setRatingParam(null)}>
         {ratingParam && (
-          <DialogContent
+          <DrawerContent
             title={`Self-survey: ${ratingParam.code}`}
             description={ratingParam.title}
-            className="max-w-md"
+            size="lg"
           >
             <form onSubmit={handleSaveSelfSurvey} className="space-y-4 pt-2">
               <div>
@@ -275,9 +275,9 @@ export function AssignmentChecklist() {
                 </Button>
               </div>
             </form>
-          </DialogContent>
+          </DrawerContent>
         )}
-      </Dialog>
+      </Drawer>
     </div>
   );
 }

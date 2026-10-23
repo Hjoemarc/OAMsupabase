@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import {
   Table,
   TableBody,
@@ -454,12 +454,12 @@ export function MockSurveyWorkspace() {
         </div>
       </Card>
 
-      {/* Record Finding Dialog */}
-      <Dialog open={isFindingModalOpen} onOpenChange={setIsFindingModalOpen}>
-        <DialogContent
+      {/* Record Finding Drawer */}
+      <Drawer open={isFindingModalOpen} onOpenChange={setIsFindingModalOpen}>
+        <DrawerContent
           title="Record Internal Mock Audit Finding"
           description="Log an observation, score, and urgent remedial intervention identified during mock inspection."
-          className="max-w-lg"
+          size="xl"
         >
           <form onSubmit={handleAddFinding} className="space-y-4 pt-2">
             <div className="grid grid-cols-2 gap-3">
@@ -588,15 +588,15 @@ export function MockSurveyWorkspace() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
-      {/* Schedule Mock Session Dialog */}
-      <Dialog open={isSessionModalOpen} onOpenChange={setIsSessionModalOpen}>
-        <DialogContent
+      {/* Schedule Mock Session Drawer */}
+      <Drawer open={isSessionModalOpen} onOpenChange={setIsSessionModalOpen}>
+        <DrawerContent
           title="Schedule Mock Survey Simulation"
           description="Initialize a new pre-audit simulation session to stress-test program readiness."
-          className="max-w-md"
+          size="lg"
         >
           <form onSubmit={handleCreateSession} className="space-y-4 pt-2">
             <div>
@@ -696,8 +696,8 @@ export function MockSurveyWorkspace() {
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }
