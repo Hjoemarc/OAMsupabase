@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { getCurrentUserWithRoles } from '@/features/auth/queries';
 import { RegisterForm } from '@/features/auth/components/register-form';
@@ -6,8 +7,8 @@ import { BrandMark } from '@/components/layout/brand-mark';
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Create Account | ZPPSU OAMS',
-  description: 'Register for institutional accreditation access to ZPPSU OAMS.',
+  title: 'Sign Up | ZPPSU OAMS',
+  description: 'Create your account to access your accreditation workspace.',
 };
 
 export default async function RegisterPage() {
@@ -18,72 +19,79 @@ export default async function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[var(--background)]">
-      {/* Left Brand Panel */}
-      <div className="md:w-5/12 lg:w-4/12 bg-[#800000] text-white p-8 md:p-12 flex flex-col justify-between relative overflow-hidden border-b md:border-b-0 md:border-r border-[#660000]">
-        <div className="absolute -right-16 -bottom-16 w-80 h-80 opacity-5 pointer-events-none select-none">
-          <BrandMark variant="seal" size={320} />
+    <div className="min-h-screen grid lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] bg-[var(--background)]">
+      {/* Campus photo panel */}
+      <section className="relative hidden lg:flex flex-col justify-between overflow-hidden bg-[#800000] text-white">
+        {/* Photo sits in a 16:9 frame so the whole campus view shows, then fades into maroon */}
+        <div aria-hidden className="absolute inset-x-0 top-0 aspect-[16/9]">
+          <Image
+            src="/brand/campus.jpeg"
+            alt=""
+            fill
+            priority
+            sizes="58vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#4d0000]/60 via-transparent to-[#800000]" />
         </div>
+        <div aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-[#D97706]" />
 
-        <div>
-          <div className="flex items-center gap-3.5">
-            <div className="p-1 bg-white/10 rounded-lg backdrop-blur-xs border border-white/15 shadow-sm">
-              <BrandMark variant="seal" size={44} priority />
+        <header className="relative z-10 flex items-center gap-3 p-10">
+          <BrandMark variant="seal" size={48} priority />
+          <div className="leading-tight">
+            <span className="block font-[family-name:var(--font-display)] text-lg font-semibold tracking-wide">
+              ZPPSU
+            </span>
+            <span className="block text-xs text-white/85">
+              Zamboanga Peninsula Polytechnic State University
+            </span>
+          </div>
+        </header>
+
+        <div className="relative z-10 p-10 pb-12 max-w-2xl space-y-4">
+          <span className="inline-block h-1 w-12 rounded-full bg-[#D97706]" />
+          <h1 className="font-[family-name:var(--font-display)] text-4xl xl:text-5xl font-semibold leading-[1.05] tracking-tight">
+            Online Accreditation
+            <br />
+            Management System
+          </h1>
+          <p className="text-base text-white/90 leading-relaxed max-w-md">
+            Join your department leads and accreditation team to manage programs and submit evidence.
+          </p>
+          <p className="font-[family-name:var(--font-display)] text-sm uppercase tracking-[0.2em] text-[#FCD34D]">
+            Un Sagwan, Un Layag
+          </p>
+        </div>
+      </section>
+
+      {/* Sign up panel */}
+      <main className="flex flex-col min-h-screen lg:min-h-0">
+        <div className="lg:hidden h-[3px] bg-[#800000]" />
+
+        <div className="flex-1 flex items-center justify-center px-6 py-10 sm:px-10">
+          <div className="w-full max-w-sm space-y-7">
+            <div className="space-y-4">
+              <BrandMark variant="seal" size={56} priority className="lg:hidden" />
+              <div className="space-y-1.5">
+                <h2 className="font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-[var(--foreground)]">
+                  Sign up
+                </h2>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                  Create your account with your school credentials.
+                </p>
+              </div>
             </div>
+
             <div>
-              <span className="block font-[family-name:var(--font-display)] text-sm font-bold uppercase tracking-wider text-[#FCD34D]">
-                ZPPSU
-              </span>
-              <span className="block text-[11px] text-white/80 font-normal">
-                Region IX · Zamboanga City
-              </span>
-            </div>
-          </div>
-
-          <div className="mt-12 md:mt-20 space-y-4">
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/10 border border-white/15 text-[11px] font-medium text-amber-200">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" />
-              Personnel Provisioning
-            </div>
-
-            <h1 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl font-semibold leading-tight tracking-tight text-white">
-              Institutional Accreditation Portal
-            </h1>
-
-            <p className="text-xs text-white/80 leading-relaxed max-w-sm">
-              Register as an Area Faculty Lead, Program Coordinator, or Accreditation Auditor to collaborate on institutional evaluations.
-            </p>
-
-            <div className="pt-2">
-              <div className="w-12 h-0.5 bg-[#D97706] mb-4" />
-              <BrandMark variant="tagline" size={150} className="filter drop-shadow-sm opacity-95" />
+              <RegisterForm />
             </div>
           </div>
         </div>
 
-        <div className="mt-8 md:mt-0 pt-6 border-t border-white/10 flex items-center justify-between text-[11px] text-white/60">
-          <span>ZPPSU Quality Assurance Office</span>
-          <span>v1.0.0</span>
-        </div>
-      </div>
-
-      {/* Right Form Container */}
-      <div className="flex-1 flex items-center justify-center p-6 md:p-12 lg:p-16">
-        <div className="w-full max-w-md space-y-6">
-          <div className="space-y-1.5">
-            <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-[var(--foreground)] tracking-tight">
-              Create personnel account
-            </h2>
-            <p className="text-xs text-[var(--text-muted)]">
-              Register with your institutional credentials. An administrator will review your account.
-            </p>
-          </div>
-
-          <div className="bg-[var(--surface)] p-6 sm:p-8 rounded-[var(--radius-panel)] border border-[var(--border)] shadow-xs">
-            <RegisterForm />
-          </div>
-        </div>
-      </div>
+        <footer className="px-6 pb-6 text-center text-xs text-[var(--text-muted)]">
+          ZPPSU Quality Assurance Office
+        </footer>
+      </main>
     </div>
   );
 }
