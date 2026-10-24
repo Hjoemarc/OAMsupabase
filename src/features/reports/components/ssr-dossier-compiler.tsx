@@ -25,6 +25,7 @@ import {
   Hash,
   FileCheck2,
 } from 'lucide-react';
+import { BrandMark } from '@/components/layout/brand-mark';
 import { calculateDossierReadiness } from '../compiler';
 import type { SSRDossier, AreaNumber } from '@/types/domain/accreditation';
 
@@ -272,8 +273,8 @@ export function SSRDossierCompiler() {
 
         {/* Cover / Submission Header Banner */}
         <div className="border-b border-[var(--border)] p-6 text-center space-y-2 bg-[var(--surface)]">
-          <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[var(--accent)] text-white font-semibold text-xs mb-1">
-            ZP
+          <div className="flex justify-center mb-1">
+            <BrandMark variant="seal" size={48} />
           </div>
           <h2 className="font-[family-name:var(--font-display)] text-sm font-semibold text-[var(--foreground)] tracking-tight uppercase">
             Zamboanga Peninsula Polytechnic State University

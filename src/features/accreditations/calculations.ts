@@ -66,7 +66,7 @@ export function interpretAccreditationRating(grandMean: number | null): {
       verdict: 'Very Satisfactory',
       eligibleLevel: 'Meets Level III Standards',
       passed: true,
-      colorClass: 'text-blue-700 bg-blue-50 border-blue-200',
+      colorClass: 'text-[#800000] bg-[#800000]/10 border-[#800000]/30',
     };
   }
 

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { BrandMark } from './brand-mark';
 import {
   LayoutDashboard,
   Users,
@@ -60,27 +61,27 @@ export function PortalSidebar({ userEmail, userName, roles }: PortalSidebarProps
 
   const linkClass = (path: string) => {
     const isActive = pathname === path;
-    return `flex items-center gap-2.5 px-3 py-1.5 rounded-[var(--radius-control)] text-xs font-medium transition-colors ${
+    return `flex items-center gap-2.5 px-3 py-2 rounded-[var(--radius-control)] text-xs transition-colors duration-150 ${
       isActive
-        ? 'bg-[var(--accent-subtle)] text-[var(--accent)] font-semibold border-l-2 border-[var(--accent)]'
-        : 'text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)]'
+        ? 'bg-[#800000] text-white font-medium shadow-xs dark:bg-[#800000] dark:text-white'
+        : 'text-[var(--text-secondary)] font-medium hover:text-[var(--foreground)] hover:bg-[var(--surface-muted)]'
     }`;
   };
 
   const iconClass = (path: string) => {
     const isActive = pathname === path;
-    return `w-4 h-4 shrink-0 stroke-[1.75] ${isActive ? 'text-[var(--accent)]' : 'text-[var(--text-muted)]'}`;
+    return `w-4 h-4 shrink-0 stroke-[1.75] ${isActive ? 'text-white' : 'text-[var(--text-muted)]'}`;
   };
 
   return (
     <>
       {/* Mobile Top Header */}
-      <div className="md:hidden sticky top-0 z-40 bg-[var(--surface)] border-b border-[var(--border)] px-4 py-3 flex items-center justify-between">
+      <div className="md:hidden sticky top-0 z-40 bg-[var(--surface)] border-b border-[var(--border)] px-4 py-2.5 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-[var(--radius-control)] bg-[var(--accent)] text-white flex items-center justify-center font-medium text-xs">
-            ZP
-          </div>
-          <span className="font-medium text-sm text-[var(--foreground)]">ZPPSU OAMS</span>
+          <BrandMark variant="seal" size={28} />
+          <span className="font-[family-name:var(--font-display)] font-bold text-sm text-[var(--foreground)] tracking-tight">
+            ZPPSU OAMS
+          </span>
         </div>
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
@@ -99,17 +100,15 @@ export function PortalSidebar({ userEmail, userName, roles }: PortalSidebarProps
       >
         <div className="flex flex-col flex-1 overflow-y-auto">
           {/* Workspace Switcher / Institution Brand */}
-          <div className="p-4 border-b border-[var(--border-subtle)] relative">
+          <div className="p-3.5 border-b border-[var(--border-subtle)] relative">
             <button
               onClick={() => setIsRoleDropdownOpen(!isRoleDropdownOpen)}
               className="w-full flex items-center justify-between p-2 rounded-[var(--radius-control)] hover:bg-[var(--surface-muted)] transition-colors group text-left border border-[var(--border)]"
             >
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-[var(--radius-control)] bg-[var(--accent)] text-white flex items-center justify-center font-medium text-xs shrink-0">
-                  ZP
-                </div>
+                <BrandMark variant="seal" size={32} />
                 <div className="leading-tight">
-                  <span className="block text-xs font-medium text-[var(--foreground)] group-hover:text-[var(--accent)]">
+                  <span className="block text-xs font-bold font-[family-name:var(--font-display)] tracking-tight text-[var(--foreground)] group-hover:text-[#800000]">
                     ZPPSU OAMS
                   </span>
                   <span className="block text-[11px] text-[var(--text-muted)]">

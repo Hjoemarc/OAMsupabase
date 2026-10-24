@@ -1,26 +1,29 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Roboto, Barlow_Semi_Condensed } from "next/font/google";
 import "@/components/arc/foundation.css";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const roboto = Roboto({
+  weight: ["400", "500", "700"],
   subsets: ["latin"],
+  variable: "--font-roboto",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const barlowSemiCondensed = Barlow_Semi_Condensed({
+  weight: ["500", "600", "700"],
   subsets: ["latin"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+  variable: "--font-barlow",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "ZPPSU - Online Accreditation Management System",
-  description: "Accreditation management system for Zamboanga Peninsula Polytechnic State University",
+  title: "ZPPSU - Online Accreditation Management System | Un Sagwan, Un Layag",
+  description: "Official Accreditation Management System for Zamboanga Peninsula Polytechnic State University",
+  icons: {
+    icon: "/brand/zppsu-seal.png",
+    apple: "/brand/zppsu-seal.png",
+  },
 };
 
 export default function RootLayout({
@@ -31,10 +34,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} h-full antialiased`}
+      className={`${roboto.variable} ${barlowSemiCondensed.variable} h-full antialiased`}
       data-accent="maroon"
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );
 }

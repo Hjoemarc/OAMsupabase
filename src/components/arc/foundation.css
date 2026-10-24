@@ -61,10 +61,10 @@
   --space-1: .25rem; --space-2: .5rem; --space-3: .75rem; --space-4: 1rem;
   --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
   --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
-  --radius-control: 1.125rem; --radius-panel: 1.625rem; --radius-surface: 2.125rem; --radius-pill: 9999px;
+  --radius-control: .5rem; --radius-panel: .75rem; --radius-surface: 1rem; --radius-pill: 9999px;
   --control-height-sm: 2.25rem; --control-height-md: 2.75rem; --control-height-lg: 3.125rem;
-  --font-display: var(--font-geist, "Geist Variable"), sans-serif;
-  --font-body: var(--font-inter, "Inter Variable"), sans-serif;
+  --font-display: var(--font-barlow, "Barlow Semi Condensed"), sans-serif;
+  --font-body: var(--font-roboto, "Roboto"), sans-serif;
   --text-xs: .75rem; --text-sm: .875rem; --text-base: 1rem; --text-lg: 1.125rem;
   --text-xl: 1.375rem; --text-2xl: 1.75rem; --text-3xl: 2.25rem;
   --text-4xl: 3.25rem; --text-5xl: 4.5rem;
@@ -119,7 +119,30 @@
   --arc-gradient-ink: linear-gradient(100deg, oklch(82% .07 300), oklch(86% .065 70));
 }
 
-:root[data-accent="maroon"], :root { --accent: #7B1113; --accent-strong: #590B0D; --accent-subtle: rgba(123, 17, 19, 0.08); --accent-foreground: #ffffff; --control-on: #7B1113; --control-glyph: #ffffff; --control-thumb-on: #ffffff; }
+:root[data-accent="maroon"], :root {
+  --accent: #800000;
+  --accent-strong: #9d2323;
+  --accent-subtle: rgba(128, 0, 0, 0.08);
+  --accent-foreground: #ffffff;
+  --control-on: #800000;
+  --control-glyph: #ffffff;
+  --control-thumb-on: #ffffff;
+  --gold: #D97706;
+  --gold-strong: #B45309;
+  --gold-subtle: rgba(217, 119, 6, 0.12);
+}
+:root[data-theme="dark"][data-accent="maroon"], :root[data-theme="dark"] {
+  --accent: #ff8587;
+  --accent-strong: #ffa1a3;
+  --accent-subtle: rgba(255, 133, 135, 0.18);
+  --accent-foreground: #1c0203;
+  --control-on: #e05255;
+  --control-glyph: #ffffff;
+  --control-thumb-on: #ffffff;
+  --gold: #FBBF24;
+  --gold-strong: #F59E0B;
+  --gold-subtle: rgba(251, 191, 36, 0.2);
+}
 :root[data-accent="neutral"] { --accent: oklch(33% 0 0); --accent-strong: oklch(24% 0 0); --accent-subtle: oklch(33% 0 0 / .1); }
 :root[data-accent="violet"] { --accent: #7747ff; --accent-strong: #5528ce; --accent-subtle: rgb(119 71 255 / .13); }
 :root[data-accent="blue"] { --accent: #0562ef; --accent-strong: #074db7; --accent-subtle: rgb(5 98 239 / .12); }

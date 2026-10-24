@@ -3,6 +3,7 @@ import { getCurrentUserWithRoles } from '@/features/auth/queries';
 import { logout } from '@/features/auth/actions';
 import { Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { BrandMark } from '@/components/layout/brand-mark';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,18 +27,22 @@ export default async function PendingApprovalPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--background)] px-4 py-12 sm:px-6 lg:px-8 text-[var(--foreground)]">
-      <div className="w-full max-w-lg space-y-6 bg-[var(--surface)] p-8 rounded-[var(--radius-surface)] border border-[var(--border)] shadow-xs text-center">
-        <div className="inline-flex items-center justify-center w-14 h-14 rounded-[var(--radius-control)] bg-amber-50 text-amber-700 border border-amber-200 mb-2">
-          <Clock className="w-7 h-7 stroke-[1.75]" />
+      <div className="w-full max-w-lg space-y-6 bg-[var(--surface)] p-8 rounded-[var(--radius-panel)] border border-[var(--border)] shadow-xs text-center">
+        <div className="flex flex-col items-center">
+          <BrandMark variant="seal" size={64} className="mb-4" />
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-medium text-amber-800 dark:text-amber-300 mb-2">
+            <Clock className="w-3.5 h-3.5 stroke-[1.75]" />
+            <span>Pending Administrator Approval</span>
+          </div>
         </div>
 
-        <h1 className="text-xl font-medium tracking-tight text-[var(--foreground)] font-[family-name:var(--font-display)]">
+        <h1 className="text-xl font-semibold tracking-tight text-[var(--foreground)] font-[family-name:var(--font-display)]">
           Account pending assignment
         </h1>
 
-        <p className="text-xs text-[var(--text-muted)] leading-relaxed font-[family-name:var(--font-body)]">
+        <p className="text-xs text-[var(--text-muted)] leading-relaxed">
           Welcome, <span className="font-semibold text-[var(--foreground)]">{displayName}</span>.
-          Your account has been registered, but you have not yet been assigned an accreditation role.
+          Your account has been registered, but you have not yet been assigned an institutional accreditation role.
         </p>
 
         <div className="rounded-[var(--radius-control)] bg-[var(--surface-muted)] p-4 border border-[var(--border)] text-left text-xs space-y-2 text-[var(--text-secondary)]">

@@ -1,13 +1,14 @@
+import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { getCurrentUserWithRoles } from '@/features/auth/queries';
 import { LoginForm } from '@/features/auth/components/login-form';
-import { Badge } from '@/components/ui/badge';
+import { BrandMark } from '@/components/layout/brand-mark';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Sign In | ZPPSU OAMS',
-  description: 'Sign in to access your accreditation workspace and evaluation records.',
+  title: 'Log In | ZPPSU OAMS',
+  description: 'Log in to see your accreditation work and records.',
 };
 
 export default async function LoginPage() {
@@ -18,31 +19,79 @@ export default async function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--background)] px-4 py-12 sm:px-6 lg:px-8 text-[var(--foreground)]">
-      <div className="w-full max-w-md space-y-6 bg-[var(--surface)] p-8 rounded-[var(--radius-surface)] border border-[var(--border)] shadow-xs">
-        <div className="text-center">
-          {/* ZPPSU Seal Badge */}
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-[var(--radius-control)] bg-[#7B1113] text-[#FEF3C7] shadow-2xs border border-[#580C0E] mb-3 font-semibold text-sm tracking-tight">
-            ZP
-          </div>
-          <div className="flex items-center justify-center gap-2 mb-1">
-            <span className="font-semibold text-lg text-[var(--foreground)] font-[family-name:var(--font-display)]">
-              ZPPSU OAMS
+    <div className="min-h-screen grid lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] bg-[var(--background)]">
+      {/* Campus photo panel */}
+      <section className="relative hidden lg:flex flex-col justify-between overflow-hidden bg-[#800000] text-white">
+        {/* Photo sits in a 16:9 frame so the whole campus view shows, then fades into maroon */}
+        <div aria-hidden className="absolute inset-x-0 top-0 aspect-[16/9]">
+          <Image
+            src="/brand/campus.jpeg"
+            alt=""
+            fill
+            priority
+            sizes="58vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#4d0000]/60 via-transparent to-[#800000]" />
+        </div>
+        <div aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-[#D97706]" />
+
+        <header className="relative z-10 flex items-center gap-3 p-10">
+          <BrandMark variant="seal" size={48} priority />
+          <div className="leading-tight">
+            <span className="block font-[family-name:var(--font-display)] text-lg font-semibold tracking-wide">
+              ZPPSU
             </span>
-            <Badge tone="neutral" size="sm">
-              QA portal
-            </Badge>
+            <span className="block text-xs text-white/85">
+              Zamboanga Peninsula Polytechnic State University
+            </span>
           </div>
-          <h1 className="text-xl font-medium tracking-tight text-[var(--foreground)] font-[family-name:var(--font-display)]">
-            Online accreditation management
+        </header>
+
+        <div className="relative z-10 p-10 pb-12 max-w-2xl space-y-4">
+          <span className="inline-block h-1 w-12 rounded-full bg-[#D97706]" />
+          <h1 className="font-[family-name:var(--font-display)] text-4xl xl:text-5xl font-semibold leading-[1.05] tracking-tight">
+            Online Accreditation
+            <br />
+            Management System
           </h1>
-          <p className="mt-1 text-xs text-[var(--text-muted)] font-[family-name:var(--font-body)]">
-            Sign in with your institutional credentials
+          <p className="text-base text-white/90 leading-relaxed max-w-md">
+            Keep your programs, files, and survey results in one place.
+          </p>
+          <p className="font-[family-name:var(--font-display)] text-sm uppercase tracking-[0.2em] text-[#FCD34D]">
+            Un Sagwan, Un Layag
           </p>
         </div>
+      </section>
 
-        <LoginForm />
-      </div>
+      {/* Log in panel */}
+      <main className="flex flex-col min-h-screen lg:min-h-0">
+        <div className="lg:hidden h-[3px] bg-[#800000]" />
+
+        <div className="flex-1 flex items-center justify-center px-6 py-10 sm:px-10">
+          <div className="w-full max-w-sm space-y-8">
+            <div className="space-y-5">
+              <BrandMark variant="seal" size={56} priority className="lg:hidden" />
+              <div className="space-y-2">
+                <h2 className="font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-[var(--foreground)]">
+                  Log in
+                </h2>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                  Use your school email and password to start.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <LoginForm />
+            </div>
+          </div>
+        </div>
+
+        <footer className="px-6 pb-6 text-center text-xs text-[var(--text-muted)]">
+          ZPPSU Quality Assurance Office
+        </footer>
+      </main>
     </div>
   );
 }

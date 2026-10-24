@@ -19,10 +19,10 @@ import {
 import { Search, Check, Plus, Loader2 } from 'lucide-react';
 
 const ROLE_ACTIVE_STYLES: Record<AppRole, string> = {
-  admin: 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100',
-  coordinator: 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100',
-  evaluator: 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100',
-  faculty: 'bg-rose-50 text-rose-800 border-rose-200 hover:bg-rose-100',
+  admin: 'bg-[#800000]/10 text-[#800000] border-[#800000]/25 hover:bg-[#800000]/15 dark:bg-[#800000]/25 dark:text-[#ff9999]',
+  coordinator: 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800/40',
+  evaluator: 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/40',
+  faculty: 'bg-[var(--surface-muted)] text-[var(--foreground)] border-[var(--border)] hover:bg-[var(--surface)]',
 };
 
 const ROLE_INACTIVE_STYLES =

@@ -307,7 +307,7 @@ export function CrossWalkMatrix() {
                         {item.targetStandardTitle}
                       </p>
                       {item.notes && (
-                        <p className="text-[10px] text-blue-700 bg-blue-500/10 px-1.5 py-0.5 rounded mt-1 inline-block">
+                        <p className="text-[10px] text-[var(--text-secondary)] bg-[var(--surface-muted)] border border-[var(--border)] px-1.5 py-0.5 rounded mt-1 inline-block">
                           {item.notes}
                         </p>
                       )}
