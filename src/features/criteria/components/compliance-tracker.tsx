@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { useAccreditationStore } from '@/features/accreditations/context/store-context';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { SummaryMetricCard } from '@/components/ui/summary-metric-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -91,57 +92,37 @@ export function ComplianceTracker() {
 
       {/* Metric Cards & Breakdown Bar */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
-        <Card className="border-l-4 border-l-emerald-600">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-emerald-700">Compliant</span>
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{compliantCount}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">All evidence verified complete</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Compliant"
+          value={compliantCount}
+          subtext="All evidence verified complete"
+          icon={CheckCircle2}
+          tone="emerald"
+        />
 
-        <Card className="border-l-4 border-l-amber-500">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-amber-700">Partial compliance</span>
-              <AlertTriangle className="w-4 h-4 text-amber-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{partialCount}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Minor deficiencies to remediate</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Partial compliance"
+          value={partialCount}
+          subtext="Minor deficiencies to remediate"
+          icon={AlertTriangle}
+          tone="amber"
+        />
 
-        <Card className="border-l-4 border-l-rose-500">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-rose-700">Non-compliant</span>
-              <XCircle className="w-4 h-4 text-rose-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{nonCompliantCount}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Urgent documentation missing</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Non-compliant"
+          value={nonCompliantCount}
+          subtext="Urgent documentation missing"
+          icon={XCircle}
+          tone="rose"
+        />
 
-        <Card className="border-l-4 border-l-[var(--border-strong)]">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[var(--text-secondary)]">Not assessed</span>
-              <HelpCircle className="w-4 h-4 text-[var(--text-muted)] stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{notAssessedCount}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Pending evaluator audit review</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Not assessed"
+          value={notAssessedCount}
+          subtext="Pending evaluator audit review"
+          icon={HelpCircle}
+          tone="default"
+        />
       </div>
 
       {/* Main Table Card */}

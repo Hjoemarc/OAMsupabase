@@ -2,7 +2,8 @@
 
 import React, { useState, useMemo } from 'react';
 import { useAccreditationStore } from '@/features/accreditations/context/store-context';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { SummaryMetricCard } from '@/components/ui/summary-metric-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -157,71 +158,37 @@ export function CrossWalkMatrix() {
 
       {/* 4 Summary Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
-        <Card>
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[var(--text-secondary)]">CHED CMO compliance</span>
-              <Award className="w-4 h-4 text-blue-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">
-              {chedCoverage.coveragePercentage}%
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">
-              {chedCoverage.coveredStandardsCount} of {chedCoverage.totalExpectedStandards} standards mapped
-            </p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="CHED CMO compliance"
+          value={`${chedCoverage.coveragePercentage}%`}
+          subtext={`${chedCoverage.coveredStandardsCount} of ${chedCoverage.totalExpectedStandards} standards mapped`}
+          icon={Award}
+          tone="blue"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[var(--text-secondary)]">ISO 9001:2015 clauses</span>
-              <Shield className="w-4 h-4 text-emerald-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-emerald-700 tabular-nums">
-              {isoCoverage.coveragePercentage}%
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">
-              {isoCoverage.coveredStandardsCount} of {isoCoverage.totalExpectedStandards} QMS clauses covered
-            </p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="ISO 9001:2015 clauses"
+          value={`${isoCoverage.coveragePercentage}%`}
+          subtext={`${isoCoverage.coveredStandardsCount} of ${isoCoverage.totalExpectedStandards} QMS clauses covered`}
+          icon={Shield}
+          tone="emerald"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[var(--text-secondary)]">PTC engineering criteria</span>
-              <Layers className="w-4 h-4 text-purple-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-purple-700 tabular-nums">
-              {ptcCoverage.coveragePercentage}%
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">
-              {ptcCoverage.coveredStandardsCount} of {ptcCoverage.totalExpectedStandards} criteria fulfilled
-            </p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="PTC engineering criteria"
+          value={`${ptcCoverage.coveragePercentage}%`}
+          subtext={`${ptcCoverage.coveredStandardsCount} of ${ptcCoverage.totalExpectedStandards} criteria fulfilled`}
+          icon={Layers}
+          tone="purple"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[var(--text-secondary)]">Active mappings</span>
-              <FileCheck2 className="w-4 h-4 text-[var(--accent)] stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--accent)] tabular-nums">
-              {crosswalkMappings.length}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Inter-agency evidence linkages</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Active mappings"
+          value={crosswalkMappings.length}
+          subtext="Inter-agency evidence linkages"
+          icon={FileCheck2}
+          tone="accent"
+        />
       </div>
 
       {/* Main Table Card */}

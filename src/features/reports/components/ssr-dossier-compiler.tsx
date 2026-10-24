@@ -2,7 +2,8 @@
 
 import React, { useState, useMemo } from 'react';
 import { useAccreditationStore } from '@/features/accreditations/context/store-context';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { SummaryMetricCard } from '@/components/ui/summary-metric-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -192,53 +193,37 @@ export function SSRDossierCompiler() {
 
       {/* 4 Summary Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Verification readiness</span>
-            <CardTitle className="text-2xl font-medium text-emerald-700 tabular-nums">
-              {readiness.readinessPercentage}%
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Verified accepted against total exhibits</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Verification readiness"
+          value={`${readiness.readinessPercentage}%`}
+          subtext="Verified accepted against total exhibits"
+          icon={ShieldCheck}
+          tone="emerald"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Total exhibits indexed</span>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">
-              {readiness.totalExhibits}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Bound across all evaluated areas</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Total exhibits indexed"
+          value={readiness.totalExhibits}
+          subtext="Bound across all evaluated areas"
+          icon={FolderArchive}
+          tone="default"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Verified exhibits</span>
-            <CardTitle className="text-2xl font-medium text-[var(--accent)] tabular-nums">
-              {readiness.verifiedExhibits}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Audit-ready approved artifacts</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Verified exhibits"
+          value={readiness.verifiedExhibits}
+          subtext="Audit-ready approved artifacts"
+          icon={CheckCircle2}
+          tone="accent"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Pending review</span>
-            <CardTitle className="text-2xl font-medium text-amber-700 tabular-nums">
-              {readiness.pendingExhibits}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Requires coordinator verification</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Pending review"
+          value={readiness.pendingExhibits}
+          subtext="Requires coordinator verification"
+          icon={Clock}
+          tone="amber"
+        />
       </div>
 
       {/* Main Dossier Presentation Card */}

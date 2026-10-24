@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { useAccreditationStore } from '@/features/accreditations/context/store-context';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { SummaryMetricCard } from '@/components/ui/summary-metric-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -110,57 +111,37 @@ export function ReviewWorkbench() {
 
       {/* 4 Status Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
-        <Card className="border-l-4 border-l-amber-500">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-amber-700">Documents for review</span>
-              <Clock className="w-4 h-4 text-amber-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{docsForReviewCount}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Awaiting internal QA vetting</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Documents for review"
+          value={docsForReviewCount}
+          subtext="Awaiting internal QA vetting"
+          icon={Clock}
+          tone="amber"
+        />
 
-        <Card className="border-l-4 border-l-rose-500">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-rose-700">Needs revision</span>
-              <AlertCircle className="w-4 h-4 text-rose-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{needsRevisionCount}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Sent back for additional proof</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Needs revision"
+          value={needsRevisionCount}
+          subtext="Sent back for additional proof"
+          icon={AlertCircle}
+          tone="rose"
+        />
 
-        <Card className="border-l-4 border-l-emerald-600">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-emerald-700">Approved artifacts</span>
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{approvedCount}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Ready for accreditor inspection</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Approved artifacts"
+          value={approvedCount}
+          subtext="Ready for accreditor inspection"
+          icon={CheckCircle2}
+          tone="emerald"
+        />
 
-        <Card className="border-l-4 border-l-[var(--border-strong)]">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[var(--text-secondary)]">Pending assignments</span>
-              <FileCheck2 className="w-4 h-4 text-[var(--text-muted)] stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{pendingAssignmentsCount}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Faculty tasks without submissions</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Pending assignments"
+          value={pendingAssignmentsCount}
+          subtext="Faculty tasks without submissions"
+          icon={FileCheck2}
+          tone="default"
+        />
       </div>
 
       {/* Main Table Card */}

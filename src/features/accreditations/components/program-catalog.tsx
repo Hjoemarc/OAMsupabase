@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import { useAccreditationStore } from '../context/store-context';
 import { canDeleteDepartment, canDeleteProgram, filterProgramsByDepartment } from '../calculations';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { SummaryMetricCard } from '@/components/ui/summary-metric-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,6 +29,7 @@ import {
   BookOpen,
   Edit2,
   Trash2,
+  Award,
 } from 'lucide-react';
 import type {
   AccreditationLevel,
@@ -372,54 +374,42 @@ export function ProgramCatalog() {
 
       {/* 4 Summary Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Academic colleges</span>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{departments.length}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Active constituent departments</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Academic colleges"
+          value={departments.length}
+          subtext="Active constituent departments"
+          icon={Building2}
+          tone="default"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Degree programs</span>
-            <CardTitle className="text-2xl font-medium text-[var(--accent)] tabular-nums">{programs.length}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Undergraduate curricula</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Degree programs"
+          value={programs.length}
+          subtext="Undergraduate curricula"
+          icon={GraduationCap}
+          tone="accent"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Academic courses</span>
-            <CardTitle className="text-2xl font-medium text-emerald-700 tabular-nums">
-              {courses.length}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Active subjects in catalog</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Academic courses"
+          value={courses.length}
+          subtext="Active subjects in catalog"
+          icon={BookOpen}
+          tone="emerald"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Level III and above</span>
-            <CardTitle className="text-2xl font-medium text-amber-700 tabular-nums">
-              {
-                programs.filter(
-                  (p) =>
-                    p.currentLevel.includes('Level III') || p.currentLevel === 'Level IV'
-                ).length
-              }
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Higher accreditation benchmarks</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Level III and above"
+          value={
+            programs.filter(
+              (p) =>
+                p.currentLevel.includes('Level III') || p.currentLevel === 'Level IV'
+            ).length
+          }
+          subtext="Higher accreditation benchmarks"
+          icon={Award}
+          tone="amber"
+        />
       </div>
 
       {/* Tab Controls & Filter Bar */}

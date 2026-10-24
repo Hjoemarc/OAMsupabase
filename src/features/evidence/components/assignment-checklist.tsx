@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { useAccreditationStore } from '@/features/accreditations/context/store-context';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { SummaryMetricCard } from '@/components/ui/summary-metric-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -75,57 +76,37 @@ export function AssignmentChecklist() {
 
       {/* 4 Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
-        <Card className="border-l-4 border-l-[var(--border-strong)]">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[var(--text-secondary)]">Total criteria</span>
-              <ClipboardList className="w-4 h-4 text-[var(--text-muted)] stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{totalAssigned}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Parameters assigned to your team</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Total criteria"
+          value={totalAssigned}
+          subtext="Parameters assigned to your team"
+          icon={ClipboardList}
+          tone="default"
+        />
 
-        <Card className="border-l-4 border-l-amber-500">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-amber-700">Pending survey</span>
-              <Clock className="w-4 h-4 text-amber-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{pendingCount}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Require self-rating and evidence</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Pending survey"
+          value={pendingCount}
+          subtext="Require self-rating and evidence"
+          icon={Clock}
+          tone="amber"
+        />
 
-        <Card className="border-l-4 border-l-blue-600">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-blue-700">Submitted</span>
-              <FileText className="w-4 h-4 text-blue-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{submittedCount}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Awaiting QA auditor inspection</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Submitted"
+          value={submittedCount}
+          subtext="Awaiting QA auditor inspection"
+          icon={FileText}
+          tone="blue"
+        />
 
-        <Card className="border-l-4 border-l-emerald-600">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-emerald-700">Audited benchmarks</span>
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{auditedCount}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Officially evaluated parameters</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Audited benchmarks"
+          value={auditedCount}
+          subtext="Officially evaluated parameters"
+          icon={CheckCircle2}
+          tone="emerald"
+        />
       </div>
 
       {/* Main Table Card */}

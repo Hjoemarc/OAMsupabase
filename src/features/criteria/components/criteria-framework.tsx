@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { useAccreditationStore } from '@/features/accreditations/context/store-context';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { SummaryMetricCard } from '@/components/ui/summary-metric-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -230,35 +231,29 @@ export function CriteriaFramework() {
 
       {/* 3 Metric Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">10 standard areas</span>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{areas.length}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Core areas with assigned faculty leads</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="10 standard areas"
+          value={areas.length}
+          subtext="Core areas with assigned faculty leads"
+          icon={Layers}
+          tone="default"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Evaluation benchmarks</span>
-            <CardTitle className="text-2xl font-medium text-[var(--accent)] tabular-nums">{parameters.length}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Granular rubric evaluation items</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Evaluation benchmarks"
+          value={parameters.length}
+          subtext="Granular rubric evaluation items"
+          icon={BookOpen}
+          tone="accent"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Verification indicators</span>
-            <CardTitle className="text-2xl font-medium text-emerald-700 tabular-nums">{indicators.length}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Specific documentary proof standards</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Verification indicators"
+          value={indicators.length}
+          subtext="Specific documentary proof standards"
+          icon={CheckCircle2}
+          tone="emerald"
+        />
       </div>
 
       {/* Tab Controls & Table */}

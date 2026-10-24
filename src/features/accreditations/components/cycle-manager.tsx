@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { useAccreditationStore } from '../context/store-context';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { SummaryMetricCard } from '@/components/ui/summary-metric-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -155,47 +156,37 @@ export function CycleManager() {
 
       {/* 4 Summary Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Total cycles</span>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{cycles.length}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Historical and scheduled surveys</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Total cycles"
+          value={cycles.length}
+          subtext="Historical and scheduled surveys"
+          icon={CalendarDays}
+          tone="default"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Active survey visits</span>
-            <CardTitle className="text-2xl font-medium text-[var(--accent)] tabular-nums">{activeCount}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Self-survey and audit phases</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Active survey visits"
+          value={activeCount}
+          subtext="Self-survey and audit phases"
+          icon={Clock}
+          tone="accent"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Completed cycles</span>
-            <CardTitle className="text-2xl font-medium text-emerald-700 tabular-nums">
-              {cycles.filter((c) => c.status === 'Completed').length}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Final audit reports submitted</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Completed cycles"
+          value={cycles.filter((c) => c.status === 'Completed').length}
+          subtext="Final audit reports submitted"
+          icon={CheckCircle2}
+          tone="emerald"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Agency compliance</span>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">100%</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">AACCUP and CHED timeline aligned</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Agency compliance"
+          value="100%"
+          subtext="AACCUP and CHED timeline aligned"
+          icon={Layers}
+          tone="blue"
+        />
       </div>
 
       {/* Main Table Card */}

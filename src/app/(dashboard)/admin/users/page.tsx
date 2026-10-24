@@ -3,7 +3,7 @@ import { requireRole } from '@/features/auth/guards';
 import { getUsersWithRoles } from '@/features/users/queries';
 import { UserDirectory } from '@/features/users/components/user-directory';
 import { ChevronLeft, Users, ShieldCheck, Award, GraduationCap } from 'lucide-react';
-import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import { SummaryMetricCard } from '@/components/ui/summary-metric-card';
 
 export const dynamic = 'force-dynamic';
 
@@ -55,46 +55,38 @@ export default async function AdminUsersPage() {
       </div>
 
       {/* Role Breakdown Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Card className="p-3.5 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-[var(--radius-control)] bg-purple-50 text-purple-700 flex items-center justify-center border border-purple-200">
-              <Users className="w-3.5 h-3.5 stroke-[1.75]" />
-            </div>
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Administrators</span>
-          </div>
-          <span className="text-xs font-mono font-semibold text-[var(--foreground)] tabular-nums">{roleCounts.admin}</span>
-        </Card>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <SummaryMetricCard
+          label="Administrators"
+          value={roleCounts.admin}
+          subtext="System & QA directors"
+          icon={Users}
+          tone="purple"
+        />
 
-        <Card className="p-3.5 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-[var(--radius-control)] bg-amber-50 text-amber-700 flex items-center justify-center border border-amber-200">
-              <ShieldCheck className="w-3.5 h-3.5 stroke-[1.75]" />
-            </div>
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Coordinators</span>
-          </div>
-          <span className="text-xs font-mono font-semibold text-[var(--foreground)] tabular-nums">{roleCounts.coordinator}</span>
-        </Card>
+        <SummaryMetricCard
+          label="Coordinators"
+          value={roleCounts.coordinator}
+          subtext="Program accreditation leads"
+          icon={ShieldCheck}
+          tone="amber"
+        />
 
-        <Card className="p-3.5 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-[var(--radius-control)] bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-200">
-              <Award className="w-3.5 h-3.5 stroke-[1.75]" />
-            </div>
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Evaluators</span>
-          </div>
-          <span className="text-xs font-mono font-semibold text-[var(--foreground)] tabular-nums">{roleCounts.evaluator}</span>
-        </Card>
+        <SummaryMetricCard
+          label="Evaluators"
+          value={roleCounts.evaluator}
+          subtext="Accreditation audit team"
+          icon={Award}
+          tone="emerald"
+        />
 
-        <Card className="p-3.5 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-[var(--radius-control)] bg-rose-50 text-rose-700 flex items-center justify-center border border-rose-200">
-              <GraduationCap className="w-3.5 h-3.5 stroke-[1.75]" />
-            </div>
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Faculty leads</span>
-          </div>
-          <span className="text-xs font-mono font-semibold text-[var(--foreground)] tabular-nums">{roleCounts.faculty}</span>
-        </Card>
+        <SummaryMetricCard
+          label="Faculty leads"
+          value={roleCounts.faculty}
+          subtext="Area leads & submitters"
+          icon={GraduationCap}
+          tone="rose"
+        />
       </div>
 
       {/* Interactive User Table */}

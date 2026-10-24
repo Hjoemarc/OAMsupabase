@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { useAccreditationStore } from '../context/store-context';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { SummaryMetricCard } from '@/components/ui/summary-metric-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -93,57 +94,37 @@ export function AccreditationTimeline() {
 
       {/* 4 Summary Level Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
-        <Card className="border-l-4 border-l-emerald-600">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-emerald-700">Level IV</span>
-              <Award className="w-4 h-4 text-emerald-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{level4Count}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Institutional excellence</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Level IV"
+          value={level4Count}
+          subtext="Institutional excellence"
+          icon={Award}
+          tone="emerald"
+        />
 
-        <Card className="border-l-4 border-l-blue-600">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-blue-700">Level III</span>
-              <Award className="w-4 h-4 text-blue-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{level3Count}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Phases 1 and 2 re-accredited</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Level III"
+          value={level3Count}
+          subtext="Phases 1 and 2 re-accredited"
+          icon={Award}
+          tone="blue"
+        />
 
-        <Card className="border-l-4 border-l-amber-500">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-amber-700">Level II</span>
-              <Award className="w-4 h-4 text-amber-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{level2Count}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Full re-accreditation status</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Level II"
+          value={level2Count}
+          subtext="Full re-accreditation status"
+          icon={Award}
+          tone="amber"
+        />
 
-        <Card className="border-l-4 border-l-[var(--border-strong)]">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[var(--text-secondary)]">Level I and candidate</span>
-              <Award className="w-4 h-4 text-[var(--text-muted)] stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{level1Count}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Initial qualifying programs</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Level I and candidate"
+          value={level1Count}
+          subtext="Initial qualifying programs"
+          icon={Award}
+          tone="default"
+        />
       </div>
 
       {/* Main Timeline Table */}

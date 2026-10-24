@@ -2,7 +2,8 @@
 
 import React, { useState, useMemo } from 'react';
 import { useAccreditationStore } from '@/features/accreditations/context/store-context';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { SummaryMetricCard } from '@/components/ui/summary-metric-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -259,68 +260,41 @@ export function MockSurveyWorkspace() {
 
       {/* 4 Summary Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Simulation grand mean</span>
-            <CardTitle className="text-2xl font-medium text-[var(--accent)] tabular-nums">
-              {metrics.grandMeanScore !== null ? `${metrics.grandMeanScore.toFixed(2)} / 5.0` : 'Pending'}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">
-              {metrics.grandMeanScore && metrics.grandMeanScore >= 4.0
-                ? 'On track for Level III benchmark'
-                : 'Deficiencies need remediation'}
-            </p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Simulation grand mean"
+          value={metrics.grandMeanScore !== null ? `${metrics.grandMeanScore.toFixed(2)} / 5.0` : 'Pending'}
+          subtext={
+            metrics.grandMeanScore && metrics.grandMeanScore >= 4.0
+              ? 'On track for Level III benchmark'
+              : 'Deficiencies need remediation'
+          }
+          icon={Sparkles}
+          tone="accent"
+        />
 
-        <Card className={metrics.criticalGapCount > 0 ? 'border-l-4 border-l-red-500' : ''}>
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className={`text-xs font-medium ${metrics.criticalGapCount > 0 ? 'text-red-600' : 'text-[var(--text-secondary)]'}`}>
-                Critical gaps
-              </span>
-              <ShieldAlert className="w-4 h-4 text-red-500 stroke-[1.75]" />
-            </div>
-            <CardTitle className={`text-2xl font-medium tabular-nums ${metrics.criticalGapCount > 0 ? 'text-red-600' : 'text-[var(--foreground)]'}`}>
-              {metrics.criticalGapCount}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Fatal issues requiring rapid resolution</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Critical gaps"
+          value={metrics.criticalGapCount}
+          subtext="Fatal issues requiring rapid resolution"
+          icon={ShieldAlert}
+          tone={metrics.criticalGapCount > 0 ? 'rose' : 'default'}
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-amber-700">Minor deficiencies</span>
-              <AlertTriangle className="w-4 h-4 text-amber-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-amber-700 tabular-nums">
-              {metrics.minorDeficiencyCount}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Non-fatal compliance recommendations</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Minor deficiencies"
+          value={metrics.minorDeficiencyCount}
+          subtext="Non-fatal compliance recommendations"
+          icon={AlertTriangle}
+          tone="amber"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-emerald-700">Commendable strengths</span>
-              <Award className="w-4 h-4 text-emerald-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-emerald-700 tabular-nums">
-              {metrics.strengthCount}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Verified exemplary benchmarks</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Commendable strengths"
+          value={metrics.strengthCount}
+          subtext="Verified exemplary benchmarks"
+          icon={Award}
+          tone="emerald"
+        />
       </div>
 
       {/* Main Table Card */}

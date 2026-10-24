@@ -7,7 +7,8 @@ import {
   filterCoursesByProgram,
   filterParametersByArea,
 } from '@/features/accreditations/calculations';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { SummaryMetricCard } from '@/components/ui/summary-metric-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -197,57 +198,37 @@ export function EvidenceVault() {
 
       {/* 4 Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
-        <Card>
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[var(--text-secondary)]">Total artifacts</span>
-              <FileText className="w-4 h-4 text-[var(--text-muted)] stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{totalDocs}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Verified evidence files</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Total artifacts"
+          value={totalDocs}
+          subtext="Verified evidence files"
+          icon={FileText}
+          tone="default"
+        />
 
-        <Card className="border-l-4 border-l-emerald-600">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-emerald-700">Accepted by QA</span>
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{approvedDocs}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Satisfies audit standards</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Accepted by QA"
+          value={approvedDocs}
+          subtext="Satisfies audit standards"
+          icon={CheckCircle2}
+          tone="emerald"
+        />
 
-        <Card className="border-l-4 border-l-amber-500">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-amber-700">Under QA review</span>
-              <Clock className="w-4 h-4 text-amber-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{inReviewDocs}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Pending verification</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Under QA review"
+          value={inReviewDocs}
+          subtext="Pending verification"
+          icon={Clock}
+          tone="amber"
+        />
 
-        <Card className="border-l-4 border-l-rose-500">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-rose-700">Needs revision</span>
-              <AlertTriangle className="w-4 h-4 text-rose-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{needsRevisionDocs}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Requires updated submission</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Needs revision"
+          value={needsRevisionDocs}
+          subtext="Requires updated submission"
+          icon={AlertTriangle}
+          tone="rose"
+        />
       </div>
 
       {/* Main Table Card */}

@@ -2,7 +2,8 @@
 
 import React, { useState, useMemo } from 'react';
 import { useAccreditationStore } from '@/features/accreditations/context/store-context';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { SummaryMetricCard } from '@/components/ui/summary-metric-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -168,60 +169,37 @@ export function CQITracker() {
 
       {/* 4 Summary Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Total action plans</span>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">
-              {stats.totalPlans}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Across all evaluated standard areas</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Total action plans"
+          value={stats.totalPlans}
+          subtext="Across all evaluated standard areas"
+          icon={ClipboardList}
+          tone="default"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Resolution progress</span>
-            <CardTitle className="text-2xl font-medium text-emerald-700 tabular-nums">
-              {stats.resolutionPercentage}%
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">
-              {stats.verifiedCompliantCount} of {stats.totalPlans} deficiencies verified
-            </p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Resolution progress"
+          value={`${stats.resolutionPercentage}%`}
+          subtext={`${stats.verifiedCompliantCount} of ${stats.totalPlans} deficiencies verified`}
+          icon={CheckCircle2}
+          tone="emerald"
+        />
 
-        <Card>
-          <CardHeader className="pb-2">
-            <span className="text-xs font-medium text-[var(--text-secondary)]">Remediation budget</span>
-            <CardTitle className="text-2xl font-medium text-[var(--accent)] tabular-nums">
-              PHP {(stats.totalAllocatedBudget / 1000).toFixed(0)}k
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Committed institutional funds</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Remediation budget"
+          value={`PHP ${(stats.totalAllocatedBudget / 1000).toFixed(0)}k`}
+          subtext="Committed institutional funds"
+          icon={DollarSign}
+          tone="accent"
+        />
 
-        <Card className={stats.overdueCount > 0 ? 'border-l-4 border-l-red-500' : ''}>
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className={`text-xs font-medium ${stats.overdueCount > 0 ? 'text-red-600' : 'text-[var(--text-secondary)]'}`}>
-                Overdue milestones
-              </span>
-              {stats.overdueCount > 0 && <ShieldAlert className="w-4 h-4 text-red-500 stroke-[1.75]" />}
-            </div>
-            <CardTitle className={`text-2xl font-medium tabular-nums ${stats.overdueCount > 0 ? 'text-red-600' : 'text-[var(--foreground)]'}`}>
-              {stats.overdueCount}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Past scheduled target completion</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Overdue milestones"
+          value={stats.overdueCount}
+          subtext="Past scheduled target completion"
+          icon={ShieldAlert}
+          tone={stats.overdueCount > 0 ? 'rose' : 'default'}
+        />
       </div>
 
       {/* Main Table Card */}

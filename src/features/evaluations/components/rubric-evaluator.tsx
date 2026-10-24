@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { useAccreditationStore } from '@/features/accreditations/context/store-context';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { SummaryMetricCard } from '@/components/ui/summary-metric-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -86,59 +87,37 @@ export function RubricEvaluator() {
 
       {/* 4 Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
-        <Card className="border-l-4 border-l-[var(--border-strong)]">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[var(--text-secondary)]">Assigned criteria</span>
-              <FileText className="w-4 h-4 text-[var(--text-muted)] stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{totalAssigned}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Parameters slated for audit</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Assigned criteria"
+          value={totalAssigned}
+          subtext="Parameters slated for audit"
+          icon={FileText}
+          tone="default"
+        />
 
-        <Card className="border-l-4 border-l-emerald-600">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-emerald-700">Audited benchmarks</span>
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{auditedCount}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Rubric scores committed</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Audited benchmarks"
+          value={auditedCount}
+          subtext="Rubric scores committed"
+          icon={CheckCircle2}
+          tone="emerald"
+        />
 
-        <Card className="border-l-4 border-l-amber-500">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-amber-700">Pending audit</span>
-              <Clock className="w-4 h-4 text-amber-600 stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">{pendingCount}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Awaiting inspection</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Pending audit"
+          value={pendingCount}
+          subtext="Awaiting inspection"
+          icon={Clock}
+          tone="amber"
+        />
 
-        <Card className="border-l-4 border-l-[var(--accent)]">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[var(--accent)]">Auditor grand mean</span>
-              <FileCheck2 className="w-4 h-4 text-[var(--accent)] stroke-[1.75]" />
-            </div>
-            <CardTitle className="text-2xl font-medium text-[var(--foreground)] tabular-nums">
-              {meanScore} <span className="text-xs font-normal text-[var(--text-muted)]">/ 5.0</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-xs text-[var(--text-muted)]">Current evaluation standing</p>
-          </CardContent>
-        </Card>
+        <SummaryMetricCard
+          label="Auditor grand mean"
+          value={`${meanScore} / 5.0`}
+          subtext="Current evaluation standing"
+          icon={FileCheck2}
+          tone="accent"
+        />
       </div>
 
       {/* Main Table Card */}
